@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import { DM_Sans, JetBrains_Mono } from 'next/font/google'
 import './globals.css'
 import { CachePurger } from '@/components/layout/CachePurger'
+import { StoreHydrator } from '@/components/layout/StoreHydrator'
 
 const dmSans = DM_Sans({
   subsets: ['latin'],
@@ -31,6 +32,7 @@ export default function RootLayout({
     <html lang="fr" className={`${dmSans.variable} ${jetbrainsMono.variable}`}>
       <body className={dmSans.className}>
         <CachePurger />
+        <StoreHydrator />
         {children}
       </body>
     </html>
