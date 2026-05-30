@@ -20,12 +20,17 @@ export interface Eleve {
   redoublant: boolean
 }
 
+/** Special marker for "Absent Justifié" on a devoir de contrôle.
+ *  When devoir_controle === 'AJ', the trimester average is computed from
+ *  the devoir de synthèse alone (no zero is applied for the missing test). */
+export type NoteValue = number | 'AJ' | null
+
 export interface Note {
   id: string
   eleveId: string
   classeId: string
   trimestre: 1 | 2 | 3
-  devoir_controle: number | null
+  devoir_controle: NoteValue
   devoir_synthese: number | null
 }
 

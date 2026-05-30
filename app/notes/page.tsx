@@ -24,6 +24,8 @@ import { Select } from '@/components/ui/Select'
 import { Tabs } from '@/components/ui/Tabs'
 import { Badge } from '@/components/ui/Badge'
 import { NumberInput } from '@/components/ui/NumberInput'
+import { NoteInput } from '@/components/ui/NoteInput'
+import type { NoteValue } from '@/lib/types'
 import { TableSkeleton } from '@/components/ui/Skeleton'
 import { EmptyState } from '@/components/ui/EmptyState'
 import { useStore } from '@/store'
@@ -90,15 +92,20 @@ export default function NotesPage() {
   const trim = parseInt(trimestre) as 1 | 2 | 3
 
   const handleNoteChange = useCallback(
-    (eleveId: string, field: 'devoir_controle' | 'devoir_synthese', val: number | null) => {
+    (eleveId: string, field: 'devoir_controle' | 'devoir_synthese', val: NoteValue) => {
       const existing = notes.find((n) => n.eleveId === eleveId && n.trimestre === trim)
+      // devoir_synthese only accepts number | null (no AJ), so coerce 'AJ' → null defensively.
+      const synthValue: number | null =
+        field === 'devoir_synthese'
+          ? (typeof val === 'number' ? val : null)
+          : (existing?.devoir_synthese ?? null)
       upsertNote({
         id: existing?.id,
         eleveId,
         classeId,
         trimestre: trim,
         devoir_controle: field === 'devoir_controle' ? val : (existing?.devoir_controle ?? null),
-        devoir_synthese: field === 'devoir_synthese' ? val : (existing?.devoir_synthese ?? null),
+        devoir_synthese: synthValue,
       })
     },
     [notes, classeId, trim, upsertNote]
@@ -223,7 +230,7 @@ export default function NotesPage() {
                   <th className="px-3 py-2 text-left text-[11px] font-semibold text-gray-500 uppercase tracking-wide">Prénom</th>
                   <th className="px-3 py-2 text-left text-[11px] font-semibold text-gray-500 uppercase tracking-wide w-36">
                     Devoir Contrôle /20
-                    <span className="font-normal text-gray-400 ml-1">(coeff 1)</span>
+                    <span className="font-normal text-gray-400 ml-1">(coeff 1, A-J possible)</span>
                   </th>
                   <th className="px-3 py-2 text-left text-[11px] font-semibold text-gray-500 uppercase tracking-wide w-36">
                     Devoir Synthèse /20
@@ -259,9 +266,10 @@ export default function NotesPage() {
                         <td className="px-3 py-0 font-medium text-gray-900">{eleve.nom}</td>
                         <td className="px-3 py-0 text-gray-700">{eleve.prenom}</td>
                         <td className="px-1 py-0.5 w-36">
-                          <NumberInput
+                          <NoteInput
                             value={note?.devoir_controle ?? null}
                             onChange={(val) => handleNoteChange(eleve.id, 'devoir_controle', val)}
+                            allowAJ
                           />
                         </td>
                         <td className="px-1 py-0.5 w-36">

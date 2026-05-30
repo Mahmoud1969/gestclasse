@@ -1,10 +1,19 @@
 import type { Note } from './types'
 
 export function moyenneTrimestre(note: Note): number | null {
-  if (note.devoir_controle === null && note.devoir_synthese === null) return null
-  const dc = note.devoir_controle ?? 0
-  const ds = note.devoir_synthese ?? 0
-  return (dc * 1 + ds * 2) / 3
+  const { devoir_controle: dc, devoir_synthese: ds } = note
+
+  // Absent Justifié on devoir de contrôle → the synthèse note IS the average.
+  // No zero is applied for the missing test.
+  if (dc === 'AJ') {
+    return ds ?? null
+  }
+
+  // Nothing entered yet → no average
+  if (dc === null && ds === null) return null
+
+  // Standard weighted average: contrôle counts 1, synthèse counts 2
+  return ((dc ?? 0) * 1 + (ds ?? 0) * 2) / 3
 }
 
 export function moyenneAnnuelle(
