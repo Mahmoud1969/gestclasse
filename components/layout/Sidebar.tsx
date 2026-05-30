@@ -14,6 +14,7 @@ import {
   Plus,
 } from 'lucide-react'
 import { useStore } from '@/store'
+import { BUILD_ID } from '@/lib/build'
 
 const navItems = [
   { href: '/dashboard', label: 'Tableau de bord', icon: LayoutDashboard },
@@ -219,9 +220,12 @@ export function Sidebar() {
         </div>
       </nav>
 
-      {/* Footer — year switcher */}
-      <div className="px-2 py-2 border-t border-gray-200 shrink-0">
+      {/* Footer — year switcher + build badge */}
+      <div className="px-2 py-2 border-t border-gray-200 shrink-0 flex flex-col gap-1.5">
         <YearSwitcher />
+        <div className="px-2 text-[9px] text-gray-300 font-mono select-none" title="Identifiant du déploiement actuel">
+          build {BUILD_ID}
+        </div>
       </div>
     </aside>
   )
