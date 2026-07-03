@@ -354,7 +354,7 @@ export default function NotesPage() {
                         <XAxis dataKey="name" tick={{ fontSize: 11, fill: '#6b7280' }} />
                         <YAxis tick={{ fontSize: 11, fill: '#6b7280' }} allowDecimals={false} />
                         <RechartTooltip contentStyle={{ fontSize: 12, borderRadius: 6, border: '1px solid #e5e7eb' }} />
-                        <Bar dataKey="count" fill="#2563eb" radius={[3, 3, 0, 0]} name="Élèves" />
+                        <Bar dataKey="count" fill="#374f8f" radius={[3, 3, 0, 0]} name="Élèves" />
                       </BarChart>
                     </ResponsiveContainer>
                   </div>
@@ -399,9 +399,9 @@ export default function NotesPage() {
                             <Line
                               type="monotone"
                               dataKey="moyenne"
-                              stroke="#2563eb"
+                              stroke="#374f8f"
                               strokeWidth={2}
-                              dot={{ r: 4, fill: '#2563eb' }}
+                              dot={{ r: 4, fill: '#374f8f' }}
                               connectNulls={false}
                             />
                           </LineChart>

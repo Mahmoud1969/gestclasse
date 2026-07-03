@@ -106,7 +106,7 @@ export default function BulletinPage() {
       <div className="max-w-2xl mx-auto bg-white border border-gray-200 rounded-lg shadow-sm p-8 print:border-0 print:shadow-none print:rounded-none print:max-w-none">
         {/* Header */}
         <div className="text-center border-b-2 border-gray-800 pb-4 mb-6">
-          <h1 className="text-[20px] font-bold text-gray-900 tracking-tight">Bulletin de notes</h1>
+          <h1 className="text-[24px] font-semibold text-gray-900 tracking-tight font-display">Bulletin de notes</h1>
           <p className="text-[13px] text-gray-500 mt-1">Année scolaire {classe?.annee ?? '—'}</p>
         </div>
 

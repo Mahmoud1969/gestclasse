@@ -1,5 +1,5 @@
 import type { Metadata } from 'next'
-import { DM_Sans, JetBrains_Mono } from 'next/font/google'
+import { DM_Sans, JetBrains_Mono, Fraunces } from 'next/font/google'
 import './globals.css'
 import { CachePurger } from '@/components/layout/CachePurger'
 import { StoreHydrator } from '@/components/layout/StoreHydrator'
@@ -18,6 +18,16 @@ const jetbrainsMono = JetBrains_Mono({
   display: 'swap',
 })
 
+// Characterful display serif for the wordmark and large headings — adds a
+// refined, editorial/scholarly touch that plain sans can't.
+const fraunces = Fraunces({
+  subsets: ['latin'],
+  weight: ['400', '500', '600'],
+  style: ['normal', 'italic'],
+  variable: '--font-display',
+  display: 'swap',
+})
+
 export const metadata: Metadata = {
   title: 'GestClasse — Gestion de Classe',
   description: 'Application de gestion de classe scolaire',
@@ -29,7 +39,7 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="fr" className={`${dmSans.variable} ${jetbrainsMono.variable}`}>
+    <html lang="fr" className={`${dmSans.variable} ${jetbrainsMono.variable} ${fraunces.variable}`}>
       <body className={dmSans.className}>
         <CachePurger />
         <StoreHydrator />

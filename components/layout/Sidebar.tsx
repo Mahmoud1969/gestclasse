@@ -188,18 +188,21 @@ export function Sidebar() {
   }
 
   return (
-    <aside className="sidebar-nav w-[220px] shrink-0 h-screen sticky top-0 bg-white border-r border-gray-200 flex flex-col">
+    <aside className="sidebar-nav w-[232px] shrink-0 h-screen sticky top-0 bg-white/95 backdrop-blur-sm border-r border-gray-200/80 flex flex-col">
       {/* Logo */}
-      <div className="flex items-center gap-2.5 px-4 h-12 border-b border-gray-200 shrink-0">
-        <div className="w-7 h-7 rounded-md bg-blue-600 flex items-center justify-center">
-          <GraduationCap size={15} className="text-white" />
+      <div className="flex items-center gap-2.5 px-4 h-14 border-b border-gray-200/70 shrink-0">
+        <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center shadow-sm ring-1 ring-blue-900/10">
+          <GraduationCap size={17} className="text-white" />
         </div>
-        <span className="text-[14px] font-bold text-gray-900 tracking-tight">GestClasse</span>
+        <span className="text-[17px] font-semibold text-gray-900 tracking-tight font-display">GestClasse</span>
       </div>
 
       {/* Nav */}
-      <nav className="flex-1 py-3 overflow-y-auto">
-        <div className="px-2 space-y-0.5">
+      <nav className="flex-1 py-4 overflow-y-auto">
+        <p className="px-4 mb-2 text-[10px] font-semibold text-gray-400 uppercase tracking-[0.12em]">
+          Menu
+        </p>
+        <div className="px-2.5 space-y-1">
           {navItems.map((item) => {
             const active = isActive(item.href)
             return (
@@ -207,13 +210,23 @@ export function Sidebar() {
                 key={item.href}
                 href={item.href}
                 className={[
-                  'flex items-center gap-2.5 px-3 h-8 rounded text-[13px] font-medium transition-colors',
+                  'group relative flex items-center gap-3 px-3 h-9 rounded-lg text-[13px] font-medium transition-all duration-150',
                   active
-                    ? 'bg-blue-50 text-blue-700 border-l-[3px] border-l-blue-600 pl-[9px]'
-                    : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900 border-l-[3px] border-l-transparent pl-[9px]',
+                    ? 'bg-blue-50 text-blue-800 shadow-[inset_0_0_0_1px_rgba(55,79,143,0.10)]'
+                    : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900',
                 ].join(' ')}
               >
-                <item.icon size={15} className={active ? 'text-blue-600' : 'text-gray-400'} />
+                {/* Active accent bar */}
+                <span
+                  className={[
+                    'absolute left-0 top-1/2 -translate-y-1/2 w-[3px] rounded-full bg-blue-600 transition-all duration-200',
+                    active ? 'h-5 opacity-100' : 'h-0 opacity-0',
+                  ].join(' ')}
+                />
+                <item.icon
+                  size={16}
+                  className={active ? 'text-blue-600' : 'text-gray-400 group-hover:text-gray-600'}
+                />
                 {item.label}
               </Link>
             )
@@ -222,7 +235,7 @@ export function Sidebar() {
       </nav>
 
       {/* Footer — year switcher + logout + build badge */}
-      <div className="px-2 py-2 border-t border-gray-200 shrink-0 flex flex-col gap-1.5">
+      <div className="px-2.5 py-3 border-t border-gray-200/70 shrink-0 flex flex-col gap-1">
         <YearSwitcher />
         <button
           type="button"
@@ -230,12 +243,12 @@ export function Sidebar() {
             await fetch('/api/auth/logout', { method: 'POST' })
             window.location.href = '/login'
           }}
-          className="flex items-center gap-2 px-2 h-8 rounded text-[12px] font-medium text-gray-500 hover:bg-red-50 hover:text-red-600 transition-colors"
+          className="flex items-center gap-2.5 px-3 h-9 rounded-lg text-[12.5px] font-medium text-gray-500 hover:bg-red-50 hover:text-red-600 transition-colors"
         >
-          <LogOut size={14} />
+          <LogOut size={15} />
           Se déconnecter
         </button>
-        <div className="px-2 text-[9px] text-gray-300 font-mono select-none" title="Identifiant du déploiement actuel">
+        <div className="px-3 pt-1 text-[9px] text-gray-300 font-mono select-none tracking-wide" title="Identifiant du déploiement actuel">
           build {BUILD_ID}
         </div>
       </div>

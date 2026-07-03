@@ -33,21 +33,21 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4">
+    <div className="min-h-screen flex items-center justify-center bg-canvas px-4">
       <div className="w-full max-w-sm">
         {/* Logo */}
-        <div className="flex flex-col items-center mb-6">
-          <div className="w-12 h-12 rounded-xl bg-blue-600 flex items-center justify-center mb-3">
-            <GraduationCap size={24} className="text-white" />
+        <div className="flex flex-col items-center mb-7">
+          <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center mb-4 shadow-elevated ring-1 ring-blue-900/10">
+            <GraduationCap size={28} className="text-white" />
           </div>
-          <h1 className="text-[18px] font-bold text-gray-900 tracking-tight">GestClasse</h1>
+          <h1 className="text-[26px] font-semibold text-gray-900 tracking-tight font-display">GestClasse</h1>
           <p className="text-[13px] text-gray-500 mt-1">Gestion de classe scolaire</p>
         </div>
 
         {/* Card */}
         <form
           onSubmit={handleSubmit}
-          className="bg-white border border-gray-200 rounded-xl shadow-sm p-6 flex flex-col gap-4"
+          className="bg-white/90 backdrop-blur-sm border border-gray-200/80 rounded-2xl shadow-elevated p-7 flex flex-col gap-4"
         >
           <div className="flex flex-col gap-1.5">
             <label htmlFor="password" className="text-[12px] font-medium text-gray-700">
@@ -71,7 +71,7 @@ export default function LoginPage() {
           <button
             type="submit"
             disabled={loading}
-            className="h-10 flex items-center justify-center gap-2 bg-blue-600 text-white text-[14px] font-medium rounded-lg hover:bg-blue-700 transition-colors disabled:opacity-60 disabled:cursor-not-allowed"
+            className="h-11 flex items-center justify-center gap-2 bg-gradient-to-br from-blue-500 to-blue-700 text-white text-[14px] font-medium rounded-xl shadow-sm hover:shadow-md hover:brightness-105 active:brightness-95 transition-all disabled:opacity-60 disabled:cursor-not-allowed"
           >
             {loading ? <Loader2 size={15} className="animate-spin" /> : null}
             Se connecter
