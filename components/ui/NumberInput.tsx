@@ -10,6 +10,9 @@ interface NumberInputProps {
   step?: number
   placeholder?: string
   className?: string
+  id?: string
+  /** Called when the user presses Enter — used for fast keyboard entry. */
+  onEnter?: () => void
 }
 
 export function NumberInput({
@@ -20,6 +23,8 @@ export function NumberInput({
   step = 0.25,
   placeholder = '—',
   className = '',
+  id,
+  onEnter,
 }: NumberInputProps) {
   const bgClass =
     value === null
@@ -51,14 +56,23 @@ export function NumberInput({
     onChange(Math.round(rounded * 100) / 100)
   }
 
+  function handleKeyDown(e: React.KeyboardEvent<HTMLInputElement>) {
+    if (e.key === 'Enter') {
+      e.preventDefault()
+      onEnter?.()
+    }
+  }
+
   return (
     <input
+      id={id}
       type="number"
       min={min}
       max={max}
       step={step}
       value={value === null ? '' : value}
       onChange={handleChange}
+      onKeyDown={handleKeyDown}
       placeholder={placeholder}
       className={[
         'w-full h-8 px-2 text-center text-[12px] font-mono border border-transparent rounded transition-colors',

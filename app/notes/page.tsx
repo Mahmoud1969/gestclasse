@@ -91,6 +91,15 @@ export default function NotesPage() {
 
   const trim = parseInt(trimestre) as 1 | 2 | 3
 
+  // Fast keyboard entry: Enter moves to the same column of the next student.
+  function focusNextCell(col: 'dc' | 'ds', rowIndex: number) {
+    const next = document.getElementById(`nc-${col}-${rowIndex + 1}`)
+    if (next) {
+      ;(next as HTMLInputElement).focus()
+      ;(next as HTMLInputElement).select?.()
+    }
+  }
+
   const handleNoteChange = useCallback(
     (eleveId: string, field: 'devoir_controle' | 'devoir_synthese', val: NoteValue) => {
       const existing = notes.find((n) => n.eleveId === eleveId && n.trimestre === trim)
@@ -267,15 +276,19 @@ export default function NotesPage() {
                         <td className="px-3 py-0 text-gray-700">{eleve.prenom}</td>
                         <td className="px-1 py-0.5 w-36">
                           <NoteInput
+                            id={`nc-dc-${i}`}
                             value={note?.devoir_controle ?? null}
                             onChange={(val) => handleNoteChange(eleve.id, 'devoir_controle', val)}
+                            onEnter={() => focusNextCell('dc', i)}
                             allowAJ
                           />
                         </td>
                         <td className="px-1 py-0.5 w-36">
                           <NumberInput
+                            id={`nc-ds-${i}`}
                             value={note?.devoir_synthese ?? null}
                             onChange={(val) => handleNoteChange(eleve.id, 'devoir_synthese', val)}
+                            onEnter={() => focusNextCell('ds', i)}
                           />
                         </td>
                         <td className="px-3 py-0 w-24">

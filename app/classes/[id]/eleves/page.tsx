@@ -24,6 +24,8 @@ import {
   ChevronsUpDown,
   Search,
   UserX,
+  FileText,
+  Upload,
 } from 'lucide-react'
 import { AppShell } from '@/components/layout/AppShell'
 import { Toolbar } from '@/components/ui/Toolbar'
@@ -37,7 +39,7 @@ import { EmptyState } from '@/components/ui/EmptyState'
 import { TableSkeleton } from '@/components/ui/Skeleton'
 import { useStore } from '@/store'
 import type { Eleve } from '@/lib/types'
-import { moyenneTrimestre, moyenneAnnuelle, progression } from '@/lib/computed'
+import { moyenneTrimestre, moyenneAnnuelle, progression, computeRanks } from '@/lib/computed'
 
 function safeFormatDate(dateStr: string): string {
   if (!dateStr) return '—'
@@ -46,11 +48,60 @@ function safeFormatDate(dateStr: string): string {
   return format(d, 'dd/MM/yyyy')
 }
 
+interface ParsedEleve {
+  nom: string
+  prenom: string
+  dateNaissance: string
+  redoublant: boolean
+}
+
+/** Normalize a date cell ("14/03/2009", "2009-03-14", "14-03-2009") → ISO yyyy-mm-dd, or ''. */
+function normalizeDate(raw: string): string {
+  const s = raw.trim()
+  if (!s) return ''
+  // yyyy-mm-dd already
+  if (/^\d{4}-\d{2}-\d{2}$/.test(s)) return s
+  // dd/mm/yyyy or dd-mm-yyyy
+  const m = s.match(/^(\d{1,2})[/\-.](\d{1,2})[/\-.](\d{4})$/)
+  if (m) {
+    const [, d, mo, y] = m
+    return `${y}-${mo.padStart(2, '0')}-${d.padStart(2, '0')}`
+  }
+  return ''
+}
+
+/**
+ * Parse pasted text into students. Accepts one student per line, columns
+ * separated by TAB (Excel paste), comma, or semicolon:
+ *   Nom [, Prénom [, DateNaissance [, Redoublant]]]
+ * "Redoublant" is truthy for: oui, o, yes, y, 1, true, redoublant, x.
+ */
+function parseImportLines(text: string): ParsedEleve[] {
+  const out: ParsedEleve[] = []
+  const truthy = new Set(['oui', 'o', 'yes', 'y', '1', 'true', 'redoublant', 'x'])
+  for (const line of text.split(/\r?\n/)) {
+    const trimmed = line.trim()
+    if (!trimmed) continue
+    const cols = trimmed.split(/\t|,|;/).map((c) => c.trim())
+    const nom = cols[0] ?? ''
+    const prenom = cols[1] ?? ''
+    if (!nom && !prenom) continue
+    out.push({
+      nom,
+      prenom,
+      dateNaissance: normalizeDate(cols[2] ?? ''),
+      redoublant: truthy.has((cols[3] ?? '').toLowerCase()),
+    })
+  }
+  return out
+}
+
 interface EleveRow extends Eleve {
   moyT1: number | null
   moyT2: number | null
   moyT3: number | null
   moyAnnuelle: number | null
+  rang: number | null
   progression: 'up' | 'stable' | 'down'
   totalAbsences: number
 }
@@ -86,6 +137,10 @@ export default function ElevesPage() {
   const [prenomError, setPrenomError] = useState('')
   const [dateError, setDateError] = useState('')
   const [submitting, setSubmitting] = useState(false)
+
+  // Import state
+  const [importOpen, setImportOpen] = useState(false)
+  const [importText, setImportText] = useState('')
 
   useEffect(() => { setMounted(true) }, [])
 
@@ -167,6 +222,27 @@ export default function ElevesPage() {
     setDeleteTarget(null)
   }
 
+  const parsedImport = useMemo(() => parseImportLines(importText), [importText])
+
+  function handleImport() {
+    if (parsedImport.length === 0) return
+    let num = classEleves.reduce((m, el) => Math.max(m, el.numero), 0)
+    parsedImport.forEach((p) => {
+      num += 1
+      addEleve({
+        nom: p.nom,
+        prenom: p.prenom,
+        dateNaissance: p.dateNaissance,
+        redoublant: p.redoublant,
+        classeId,
+        numero: num,
+      })
+    })
+    addToast(`${parsedImport.length} élève(s) importé(s)`, 'success')
+    setImportText('')
+    setImportOpen(false)
+  }
+
   function exportCSV() {
     const headers = ['#', 'Nom', 'Prénom', 'Date de Naissance', 'Redoublant', 'Moy. T1', 'Moy. T2', 'Moy. T3', 'Moy. Annuelle']
     const rows = tableData.map((e) => [
@@ -191,7 +267,7 @@ export default function ElevesPage() {
   }
 
   const tableData = useMemo<EleveRow[]>(() => {
-    return classEleves.map((eleve) => {
+    const rows = classEleves.map((eleve) => {
       const t1 = notes.find((n) => n.eleveId === eleve.id && n.trimestre === 1)
       const t2 = notes.find((n) => n.eleveId === eleve.id && n.trimestre === 2)
       const t3 = notes.find((n) => n.eleveId === eleve.id && n.trimestre === 3)
@@ -203,6 +279,9 @@ export default function ElevesPage() {
       const totalAbsences = absences.filter((a) => a.eleveId === eleve.id).reduce((sum, a) => sum + a.duree, 0)
       return { ...eleve, moyT1, moyT2, moyT3, moyAnnuelle, progression: prog, totalAbsences }
     })
+    // Compute class ranking by annual average
+    const ranks = computeRanks(rows.map((r) => ({ id: r.id, moyenne: r.moyAnnuelle })))
+    return rows.map((r) => ({ ...r, rang: ranks.get(r.id) ?? null }))
   }, [classEleves, notes, absences])
 
   function MoyCell({ val }: { val: number | null }) {
@@ -286,6 +365,19 @@ export default function ElevesPage() {
         )
       },
     }),
+    col.accessor('rang', {
+      header: 'Rang',
+      size: 70,
+      cell: (info) => {
+        const val = info.getValue()
+        if (val === null) return <span className="text-gray-300 font-mono text-[12px]">—</span>
+        return (
+          <span className={['font-mono text-[12px] font-semibold', val === 1 ? 'text-amber-600' : 'text-gray-700'].join(' ')}>
+            {val === 1 ? '🥇 ' : ''}{val}
+          </span>
+        )
+      },
+    }),
     col.accessor('progression', {
       header: 'Progression',
       size: 120,
@@ -299,9 +391,17 @@ export default function ElevesPage() {
     col.display({
       id: 'actions',
       header: '',
-      size: 72,
+      size: 104,
       cell: ({ row }) => (
         <div className="flex items-center gap-1 justify-end">
+          <Link
+            href={`/bulletin/${classeId}/${row.original.id}`}
+            onClick={(e) => e.stopPropagation()}
+            title="Bulletin de l'élève"
+            className="p-1.5 rounded hover:bg-blue-50 text-gray-400 hover:text-blue-600 transition-colors"
+          >
+            <FileText size={13} />
+          </Link>
           <button
             onClick={(e) => { e.stopPropagation(); openEdit(row.original) }}
             className="p-1.5 rounded hover:bg-gray-100 text-gray-400 hover:text-gray-600 transition-colors"
@@ -317,7 +417,7 @@ export default function ElevesPage() {
         </div>
       ),
     }),
-  ], [openEdit])
+  ], [openEdit, classeId])
 
   const table = useReactTable({
     data: tableData,
@@ -362,6 +462,9 @@ export default function ElevesPage() {
                 className="h-8 pl-8 pr-3 text-[12px] border border-gray-300 rounded bg-white focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 w-40"
               />
             </div>
+            <Button variant="secondary" size="sm" icon={<Upload size={13} />} onClick={() => setImportOpen(true)}>
+              Importer
+            </Button>
             <Button variant="secondary" size="sm" icon={<Download size={13} />} onClick={exportCSV}>
               Exporter CSV
             </Button>
@@ -409,10 +512,10 @@ export default function ElevesPage() {
           </thead>
           <tbody>
             {!mounted ? (
-              <TableSkeleton rows={6} cols={12} />
+              <TableSkeleton rows={6} cols={13} />
             ) : table.getRowModel().rows.length === 0 ? (
               <tr>
-                <td colSpan={12}>
+                <td colSpan={13}>
                   <EmptyState
                     icon={<UserX size={22} />}
                     title="Aucun élève"
@@ -493,6 +596,64 @@ export default function ElevesPage() {
             </label>
           </div>
         </form>
+      </Modal>
+
+      {/* Import modal */}
+      <Modal
+        open={importOpen}
+        onClose={() => { setImportOpen(false); setImportText('') }}
+        title="Importer des élèves"
+        size="lg"
+        footer={
+          <>
+            <Button variant="secondary" size="sm" type="button" onClick={() => { setImportOpen(false); setImportText('') }}>
+              Annuler
+            </Button>
+            <Button variant="primary" size="sm" type="button" onClick={handleImport} disabled={parsedImport.length === 0}>
+              Importer {parsedImport.length > 0 ? `(${parsedImport.length})` : ''}
+            </Button>
+          </>
+        }
+      >
+        <div className="flex flex-col gap-3">
+          <p className="text-[12px] text-gray-600 leading-relaxed">
+            Colle une liste d&apos;élèves (une ligne par élève). Tu peux copier-coller
+            directement depuis Excel. Colonnes attendues, séparées par une tabulation,
+            une virgule ou un point-virgule :
+          </p>
+          <div className="text-[11px] font-mono bg-gray-50 border border-gray-200 rounded p-2 text-gray-600">
+            Nom , Prénom , Date de naissance , Redoublant<br />
+            <span className="text-gray-400">Ex : Ben Ali , Youssef , 14/03/2009 , non</span>
+          </div>
+          <textarea
+            value={importText}
+            onChange={(e) => setImportText(e.target.value)}
+            rows={8}
+            placeholder={'Ben Ali\tYoussef\t14/03/2009\tnon\nTrabelsi\tAmira\t22/07/2009\toui'}
+            className="w-full text-[12px] font-mono border border-gray-300 rounded p-2 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+          />
+          {parsedImport.length > 0 && (
+            <div className="border border-gray-200 rounded overflow-hidden">
+              <div className="bg-gray-50 px-3 py-1.5 text-[11px] font-semibold text-gray-500 uppercase tracking-wide">
+                Aperçu — {parsedImport.length} élève(s)
+              </div>
+              <div className="max-h-40 overflow-auto">
+                <table className="w-full text-[12px]">
+                  <tbody>
+                    {parsedImport.slice(0, 50).map((p, i) => (
+                      <tr key={i} className="border-b border-gray-100 last:border-0">
+                        <td className="px-3 py-1 font-medium text-gray-800">{p.nom || <span className="text-red-500">(nom vide)</span>}</td>
+                        <td className="px-3 py-1 text-gray-700">{p.prenom || <span className="text-gray-300">—</span>}</td>
+                        <td className="px-3 py-1 font-mono text-gray-500">{p.dateNaissance ? safeFormatDate(p.dateNaissance) : '—'}</td>
+                        <td className="px-3 py-1">{p.redoublant ? <Badge variant="danger">Redoublant</Badge> : <span className="text-gray-300 text-[11px]">—</span>}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          )}
+        </div>
       </Modal>
 
       {/* Delete confirm */}

@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server'
-import { put, list } from '@vercel/blob'
+import { put, list, del } from '@vercel/blob'
 import type { Annee, Classe, Eleve, Note, Absence } from '@/lib/types'
 
 // Disable any caching at the route level — every request must hit the blob.
@@ -7,6 +7,8 @@ export const dynamic = 'force-dynamic'
 export const runtime = 'nodejs'
 
 const BLOB_KEY = 'gestclasse-state.json'
+const BACKUP_PREFIX = 'backups/gestclasse-'
+const MAX_BACKUPS = 20
 
 export interface AppData {
   annees: Annee[]
@@ -70,16 +72,43 @@ export async function PUT(req: Request) {
     ) {
       return NextResponse.json({ error: 'Invalid shape' }, { status: 400 })
     }
-    await put(BLOB_KEY, JSON.stringify(body), {
+    const payload = JSON.stringify(body)
+    await put(BLOB_KEY, payload, {
       access: 'public',
       contentType: 'application/json',
       allowOverwrite: true,
       addRandomSuffix: false,
       cacheControlMaxAge: 0,
     })
+
+    // Fire-and-forget timestamped backup so a bad overwrite is recoverable.
+    // We await it but never let a backup failure fail the main save.
+    try {
+      const stamp = new Date().toISOString().replace(/[:.]/g, '-')
+      await put(`${BACKUP_PREFIX}${stamp}.json`, payload, {
+        access: 'public',
+        contentType: 'application/json',
+        addRandomSuffix: false,
+        cacheControlMaxAge: 0,
+      })
+      await pruneBackups()
+    } catch (backupErr) {
+      console.error('Backup step failed (main save OK)', backupErr)
+    }
+
     return NextResponse.json({ ok: true })
   } catch (err) {
     console.error('PUT /api/data failed', err)
     return NextResponse.json({ error: 'Save failed' }, { status: 500 })
   }
+}
+
+/** Keep only the most recent MAX_BACKUPS timestamped backups. */
+async function pruneBackups() {
+  const { blobs } = await list({ prefix: BACKUP_PREFIX, limit: 1000 })
+  if (blobs.length <= MAX_BACKUPS) return
+  // Pathnames sort chronologically because the timestamp is ISO-ordered.
+  const sorted = [...blobs].sort((a, b) => a.pathname.localeCompare(b.pathname))
+  const toDelete = sorted.slice(0, sorted.length - MAX_BACKUPS)
+  await Promise.all(toDelete.map((b) => del(b.url).catch(() => {})))
 }

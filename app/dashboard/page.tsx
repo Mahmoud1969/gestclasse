@@ -5,6 +5,7 @@ import Link from 'next/link'
 import { AppShell } from '@/components/layout/AppShell'
 import { Toolbar } from '@/components/ui/Toolbar'
 import { Skeleton } from '@/components/ui/Skeleton'
+import { DataBackup } from '@/components/layout/DataBackup'
 import { useStore } from '@/store'
 import { moyenneTrimestre, moyenneAnnuelle } from '@/lib/computed'
 import {
@@ -177,6 +178,9 @@ export default function DashboardPage() {
             </Link>
           </div>
         </div>
+
+        {/* Data backup / restore */}
+        <DataBackup />
 
         {/* Classes overview */}
         {mounted && classes.length > 0 && (

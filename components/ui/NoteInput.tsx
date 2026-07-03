@@ -13,6 +13,9 @@ interface NoteInputProps {
   /** When true, allow "A-J" (Absent Justifié) as a value. Off by default
    *  so we can keep using this for devoir_synthese without the AJ option. */
   allowAJ?: boolean
+  id?: string
+  /** Called when the user presses Enter — used for fast keyboard entry. */
+  onEnter?: () => void
 }
 
 /**
@@ -29,6 +32,8 @@ export function NoteInput({
   step = 0.25,
   className = '',
   allowAJ = false,
+  id,
+  onEnter,
 }: NoteInputProps) {
   // Local text so the user can edit freely without us reformatting mid-typing
   const [text, setText] = useState<string>(formatValue(value))
@@ -73,7 +78,10 @@ export function NoteInput({
 
   function handleKeyDown(e: React.KeyboardEvent<HTMLInputElement>) {
     if (e.key === 'Enter') {
-      ;(e.target as HTMLInputElement).blur()
+      e.preventDefault()
+      handleBlur()
+      if (onEnter) onEnter()
+      else (e.target as HTMLInputElement).blur()
     }
   }
 
@@ -95,6 +103,7 @@ export function NoteInput({
 
   return (
     <input
+      id={id}
       type="text"
       inputMode="decimal"
       value={text}

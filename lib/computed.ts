@@ -59,6 +59,39 @@ export function formatNote(value: number | null): string {
   return value.toFixed(2)
 }
 
+/**
+ * Ranks students by average (highest = rank 1). Students with no average
+ * (null) are unranked (null). Ties share the same rank (competition
+ * ranking: 1, 2, 2, 4). Returns a Map of eleveId → rank.
+ */
+export function computeRanks(
+  entries: { id: string; moyenne: number | null }[]
+): Map<string, number | null> {
+  const ranks = new Map<string, number | null>()
+  const ranked = entries
+    .filter((e): e is { id: string; moyenne: number } => e.moyenne !== null)
+    .sort((a, b) => b.moyenne - a.moyenne)
+
+  let lastMoy: number | null = null
+  let lastRank = 0
+  ranked.forEach((e, i) => {
+    if (lastMoy !== null && Math.abs(e.moyenne - lastMoy) < 1e-9) {
+      // tie → same rank as previous
+      ranks.set(e.id, lastRank)
+    } else {
+      lastRank = i + 1
+      lastMoy = e.moyenne
+      ranks.set(e.id, lastRank)
+    }
+  })
+
+  // Everyone without an average is unranked
+  entries.forEach((e) => {
+    if (!ranks.has(e.id)) ranks.set(e.id, null)
+  })
+  return ranks
+}
+
 export function median(values: number[]): number | null {
   if (values.length === 0) return null
   const sorted = [...values].sort((a, b) => a - b)
