@@ -40,6 +40,14 @@ export default function RootLayout({
 }) {
   return (
     <html lang="fr" className={`${dmSans.variable} ${jetbrainsMono.variable} ${fraunces.variable}`}>
+      <head>
+        {/* Apply theme before paint to avoid a flash of the wrong theme */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `try{var t=localStorage.getItem('gc-theme');if(t==='dark'||(!t&&window.matchMedia('(prefers-color-scheme: dark)').matches)){document.documentElement.classList.add('dark')}}catch(e){}`,
+          }}
+        />
+      </head>
       <body className={dmSans.className}>
         <CachePurger />
         <StoreHydrator />

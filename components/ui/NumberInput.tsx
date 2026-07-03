@@ -28,14 +28,14 @@ export function NumberInput({
 }: NumberInputProps) {
   const bgClass =
     value === null
-      ? 'bg-white'
+      ? 'bg-surface'
       : value >= 10
       ? 'bg-green-50'
       : 'bg-red-50'
 
   const textClass =
     value === null
-      ? 'text-gray-400'
+      ? 'text-faint'
       : value >= 10
       ? 'text-green-800'
       : 'text-red-800'
@@ -77,7 +77,7 @@ export function NumberInput({
       className={[
         'w-full h-8 px-2 text-center text-[12px] font-mono border border-transparent rounded transition-colors',
         'focus:outline-none focus:border-blue-400 focus:ring-1 focus:ring-blue-400',
-        'hover:border-gray-300',
+        'hover:border-line-strong',
         bgClass,
         textClass,
         className,

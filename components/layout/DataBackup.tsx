@@ -86,12 +86,12 @@ export function DataBackup() {
   }
 
   return (
-    <div className="bg-white border border-gray-200 rounded-lg p-5">
+    <div className="bg-surface border border-line rounded-lg p-5">
       <div className="flex items-center gap-2 mb-1">
         <ShieldCheck size={15} className="text-emerald-600" />
-        <h3 className="text-[13px] font-semibold text-gray-800">Sauvegarde des données</h3>
+        <h3 className="text-[13px] font-semibold text-ink">Sauvegarde des données</h3>
       </div>
-      <p className="text-[12px] text-gray-500 mb-4 leading-relaxed">
+      <p className="text-[12px] text-muted mb-4 leading-relaxed">
         Télécharge une copie de sécurité de toutes tes données, ou restaure une
         sauvegarde. Une sauvegarde automatique est aussi conservée dans le cloud.
       </p>
@@ -100,7 +100,7 @@ export function DataBackup() {
           type="button"
           onClick={handleExport}
           disabled={busy !== null}
-          className="inline-flex items-center gap-2 h-8 px-3 text-[12px] font-medium bg-white text-gray-700 border border-gray-300 rounded hover:bg-gray-50 transition-colors disabled:opacity-50"
+          className="inline-flex items-center gap-2 h-8 px-3 text-[12px] font-medium bg-surface text-ink border border-line-strong rounded hover:bg-canvas transition-colors disabled:opacity-50"
         >
           {busy === 'export' ? <Loader2 size={13} className="animate-spin" /> : <Download size={13} />}
           Exporter (JSON)
@@ -109,7 +109,7 @@ export function DataBackup() {
           type="button"
           onClick={triggerImport}
           disabled={busy !== null}
-          className="inline-flex items-center gap-2 h-8 px-3 text-[12px] font-medium bg-white text-gray-700 border border-gray-300 rounded hover:bg-gray-50 transition-colors disabled:opacity-50"
+          className="inline-flex items-center gap-2 h-8 px-3 text-[12px] font-medium bg-surface text-ink border border-line-strong rounded hover:bg-canvas transition-colors disabled:opacity-50"
         >
           {busy === 'import' ? <Loader2 size={13} className="animate-spin" /> : <Upload size={13} />}
           Importer

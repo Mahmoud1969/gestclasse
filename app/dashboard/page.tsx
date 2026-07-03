@@ -30,20 +30,20 @@ interface StatCardProps {
 function StatCard({ label, value, icon, color, loading, index = 0 }: StatCardProps) {
   return (
     <div
-      className="stagger-in group bg-white border border-gray-200/80 rounded-xl p-5 flex items-start gap-4 shadow-card hover:shadow-card-hover hover:-translate-y-0.5 transition-all duration-200"
+      className="stagger-in group bg-surface border border-line/80 rounded-xl p-5 flex items-start gap-4 shadow-card hover:shadow-card-hover hover:-translate-y-0.5 transition-all duration-200"
       style={{ ['--i' as string]: index }}
     >
       <div className={['w-11 h-11 rounded-xl flex items-center justify-center shrink-0 shadow-sm ring-1 ring-black/5 transition-transform duration-200 group-hover:scale-105', color].join(' ')}>
         {icon}
       </div>
       <div className="flex-1 min-w-0">
-        <p className="text-[10.5px] font-semibold text-gray-400 uppercase tracking-[0.1em] leading-none mb-2.5">
+        <p className="text-[10.5px] font-semibold text-faint uppercase tracking-[0.1em] leading-none mb-2.5">
           {label}
         </p>
         {loading ? (
           <Skeleton className="h-7 w-16" />
         ) : (
-          <p className="text-[26px] font-bold text-gray-900 leading-none tabular-nums">{value}</p>
+          <p className="text-[26px] font-bold text-ink leading-none tabular-nums">{value}</p>
         )}
       </div>
     </div>
@@ -129,55 +129,55 @@ export default function DashboardPage() {
 
         {/* Quick access */}
         <div>
-          <h2 className="text-[12px] font-semibold text-gray-500 uppercase tracking-wide mb-3">
+          <h2 className="text-[12px] font-semibold text-muted uppercase tracking-wide mb-3">
             Accès rapide
           </h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
             <Link href="/classes">
-              <div className="flex items-center justify-between p-4 bg-white border border-gray-200 rounded-lg hover:border-blue-300 hover:bg-blue-50/30 transition-colors group cursor-pointer">
+              <div className="flex items-center justify-between p-4 bg-surface border border-line rounded-xl hover:border-blue-300 hover:-translate-y-0.5 hover:shadow-card-hover transition-all duration-200 group cursor-pointer">
                 <div className="flex items-center gap-3">
-                  <div className="w-8 h-8 rounded-md bg-blue-100 flex items-center justify-center">
-                    <Users size={15} className="text-blue-600" />
+                  <div className="w-8 h-8 rounded-lg bg-blue-100 dark:bg-blue-500/20 flex items-center justify-center transition-transform duration-200 group-hover:scale-110">
+                    <Users size={15} className="text-blue-600 dark:text-blue-300" />
                   </div>
                   <div>
-                    <p className="text-[13px] font-medium text-gray-800">Classes</p>
-                    <p className="text-[11px] text-gray-500">
+                    <p className="text-[13px] font-medium text-ink">Classes</p>
+                    <p className="text-[11px] text-muted">
                       {mounted ? `${classes.length} classe${classes.length > 1 ? 's' : ''}` : '—'}
                     </p>
                   </div>
                 </div>
-                <ArrowRight size={14} className="text-gray-400 group-hover:text-blue-500 transition-colors" />
+                <ArrowRight size={14} className="text-faint group-hover:text-blue-500 transition-colors" />
               </div>
             </Link>
 
             <Link href="/notes">
-              <div className="flex items-center justify-between p-4 bg-white border border-gray-200 rounded-lg hover:border-blue-300 hover:bg-blue-50/30 transition-colors group cursor-pointer">
+              <div className="flex items-center justify-between p-4 bg-surface border border-line rounded-xl hover:border-blue-300 hover:-translate-y-0.5 hover:shadow-card-hover transition-all duration-200 group cursor-pointer">
                 <div className="flex items-center gap-3">
-                  <div className="w-8 h-8 rounded-md bg-green-100 flex items-center justify-center">
-                    <BookOpen size={15} className="text-green-600" />
+                  <div className="w-8 h-8 rounded-lg bg-green-100 dark:bg-green-500/20 flex items-center justify-center transition-transform duration-200 group-hover:scale-110">
+                    <BookOpen size={15} className="text-green-600 dark:text-green-300" />
                   </div>
                   <div>
-                    <p className="text-[13px] font-medium text-gray-800">Notes</p>
-                    <p className="text-[11px] text-gray-500">Feuilles de notes</p>
+                    <p className="text-[13px] font-medium text-ink">Notes</p>
+                    <p className="text-[11px] text-muted">Feuilles de notes</p>
                   </div>
                 </div>
-                <ArrowRight size={14} className="text-gray-400 group-hover:text-blue-500 transition-colors" />
+                <ArrowRight size={14} className="text-faint group-hover:text-blue-500 transition-colors" />
               </div>
             </Link>
 
             <Link href="/absences">
-              <div className="flex items-center justify-between p-4 bg-white border border-gray-200 rounded-lg hover:border-blue-300 hover:bg-blue-50/30 transition-colors group cursor-pointer">
+              <div className="flex items-center justify-between p-4 bg-surface border border-line rounded-xl hover:border-blue-300 hover:-translate-y-0.5 hover:shadow-card-hover transition-all duration-200 group cursor-pointer">
                 <div className="flex items-center gap-3">
-                  <div className="w-8 h-8 rounded-md bg-orange-100 flex items-center justify-center">
-                    <ClipboardList size={15} className="text-orange-600" />
+                  <div className="w-8 h-8 rounded-lg bg-orange-100 dark:bg-orange-500/20 flex items-center justify-center transition-transform duration-200 group-hover:scale-110">
+                    <ClipboardList size={15} className="text-orange-600 dark:text-orange-300" />
                   </div>
                   <div>
-                    <p className="text-[13px] font-medium text-gray-800">Absences</p>
+                    <p className="text-[13px] font-medium text-ink">Absences</p>
                     {/* eslint-disable-next-line react/no-unescaped-entities */}
-                    <p className="text-[11px] text-gray-500">Suivi des présences</p>
+                    <p className="text-[11px] text-muted">Suivi des présences</p>
                   </div>
                 </div>
-                <ArrowRight size={14} className="text-gray-400 group-hover:text-blue-500 transition-colors" />
+                <ArrowRight size={14} className="text-faint group-hover:text-blue-500 transition-colors" />
               </div>
             </Link>
           </div>
@@ -189,18 +189,18 @@ export default function DashboardPage() {
         {/* Classes overview */}
         {mounted && classes.length > 0 && (
           <div>
-            <h2 className="text-[12px] font-semibold text-gray-500 uppercase tracking-wide mb-3">
+            <h2 className="text-[12px] font-semibold text-muted uppercase tracking-wide mb-3">
               Vue d&apos;ensemble — Classes
             </h2>
-            <div className="bg-white border border-gray-200 rounded-lg overflow-hidden">
+            <div className="bg-surface border border-line rounded-lg overflow-hidden">
               <table className="w-full text-[13px]">
                 <thead>
-                  <tr className="border-b border-gray-200 bg-gray-50">
-                    <th className="text-left px-4 py-2.5 text-[11px] font-semibold text-gray-500 uppercase tracking-wide">Classe</th>
-                    <th className="text-left px-4 py-2.5 text-[11px] font-semibold text-gray-500 uppercase tracking-wide">Niveau</th>
-                    <th className="text-right px-4 py-2.5 text-[11px] font-semibold text-gray-500 uppercase tracking-wide">Élèves</th>
-                    <th className="text-right px-4 py-2.5 text-[11px] font-semibold text-gray-500 uppercase tracking-wide">Redoublants</th>
-                    <th className="text-right px-4 py-2.5 pr-5 text-[11px] font-semibold text-gray-500 uppercase tracking-wide"></th>
+                  <tr className="border-b border-line bg-canvas">
+                    <th className="text-left px-4 py-2.5 text-[11px] font-semibold text-muted uppercase tracking-wide">Classe</th>
+                    <th className="text-left px-4 py-2.5 text-[11px] font-semibold text-muted uppercase tracking-wide">Niveau</th>
+                    <th className="text-right px-4 py-2.5 text-[11px] font-semibold text-muted uppercase tracking-wide">Élèves</th>
+                    <th className="text-right px-4 py-2.5 text-[11px] font-semibold text-muted uppercase tracking-wide">Redoublants</th>
+                    <th className="text-right px-4 py-2.5 pr-5 text-[11px] font-semibold text-muted uppercase tracking-wide"></th>
                   </tr>
                 </thead>
                 <tbody>
@@ -208,13 +208,13 @@ export default function DashboardPage() {
                     const classEleves = eleves.filter((e) => e.classeId === cls.id)
                     const classRedoublants = classEleves.filter((e) => e.redoublant).length
                     return (
-                      <tr key={cls.id} className="border-b border-gray-100 last:border-0 hover:bg-gray-50 transition-colors">
+                      <tr key={cls.id} className="border-b border-line last:border-0 hover:bg-canvas transition-colors">
                         <td className="px-4 py-2.5">
-                          <span className="font-medium text-gray-800">{cls.nom}</span>
+                          <span className="font-medium text-ink">{cls.nom}</span>
                         </td>
-                        <td className="px-4 py-2.5 text-gray-600">{cls.niveau}</td>
-                        <td className="px-4 py-2.5 text-right text-gray-800">{classEleves.length}</td>
-                        <td className="px-4 py-2.5 text-right text-gray-600">{classRedoublants}</td>
+                        <td className="px-4 py-2.5 text-muted">{cls.niveau}</td>
+                        <td className="px-4 py-2.5 text-right text-ink">{classEleves.length}</td>
+                        <td className="px-4 py-2.5 text-right text-muted">{classRedoublants}</td>
                         <td className="px-4 py-2.5 pr-5 text-right">
                           <Link
                             href={`/classes/${cls.id}/eleves`}

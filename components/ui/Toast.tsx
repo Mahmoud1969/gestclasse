@@ -28,18 +28,18 @@ export function ToastContainer() {
         <div
           key={toast.id}
           className={[
-            'flex items-center gap-2.5 px-3.5 py-2.5 bg-white border border-l-4 rounded-lg shadow-lg',
+            'flex items-center gap-2.5 px-3.5 py-2.5 bg-surface border border-l-4 rounded-lg shadow-lg',
             'min-w-[260px] max-w-[360px] pointer-events-auto animate-toast-in',
             borderColors[toast.type],
           ].join(' ')}
         >
           {icons[toast.type]}
-          <span className="flex-1 text-[12px] text-gray-800 font-medium leading-snug">
+          <span className="flex-1 text-[12px] text-ink font-medium leading-snug">
             {toast.message}
           </span>
           <button
             onClick={() => removeToast(toast.id)}
-            className="p-0.5 rounded hover:bg-gray-100 text-gray-400 hover:text-gray-600 transition-colors"
+            className="p-0.5 rounded hover:bg-surface2 text-faint hover:text-muted transition-colors"
           >
             <X size={12} />
           </button>

@@ -16,6 +16,7 @@ import {
 } from 'lucide-react'
 import { useStore } from '@/store'
 import { BUILD_ID } from '@/lib/build'
+import { ThemeToggle } from './ThemeToggle'
 
 const navItems = [
   { href: '/dashboard', label: 'Tableau de bord', icon: LayoutDashboard },
@@ -99,27 +100,27 @@ function YearSwitcher() {
       <button
         type="button"
         onClick={() => { setOpen((o) => !o); setAdding(false) }}
-        className="w-full flex items-center justify-between gap-1 px-2 py-1.5 rounded hover:bg-gray-100 transition-colors group"
+        className="w-full flex items-center justify-between gap-1 px-2 py-1.5 rounded hover:bg-surface2 transition-colors group"
       >
         <div className="flex flex-col items-start min-w-0">
-          <span className="text-[10px] font-medium text-gray-400 uppercase tracking-wide leading-none mb-0.5">
+          <span className="text-[10px] font-medium text-faint uppercase tracking-wide leading-none mb-0.5">
             Année scolaire
           </span>
-          <span className="text-[12px] font-semibold text-gray-700 truncate leading-tight">
+          <span className="text-[12px] font-semibold text-ink truncate leading-tight">
             {anneeActive}
           </span>
         </div>
         <ChevronDown
           size={13}
           className={[
-            'text-gray-400 shrink-0 transition-transform',
+            'text-faint shrink-0 transition-transform',
             open ? 'rotate-180' : '',
           ].join(' ')}
         />
       </button>
 
       {open && (
-        <div className="absolute bottom-full left-0 right-0 mb-1 bg-white border border-gray-200 rounded-lg shadow-lg z-50 overflow-hidden">
+        <div className="absolute bottom-full left-0 right-0 mb-1 bg-surface border border-line rounded-lg shadow-lg z-50 overflow-hidden">
           {/* Year list */}
           <div className="py-1 max-h-48 overflow-y-auto">
             {annees.map((annee) => (
@@ -127,9 +128,9 @@ function YearSwitcher() {
                 key={annee.id}
                 type="button"
                 onClick={() => { setAnneeActive(annee.label); setOpen(false) }}
-                className="w-full flex items-center justify-between gap-2 px-3 py-1.5 text-[12px] hover:bg-gray-50 transition-colors"
+                className="w-full flex items-center justify-between gap-2 px-3 py-1.5 text-[12px] hover:bg-canvas transition-colors"
               >
-                <span className={annee.label === anneeActive ? 'font-semibold text-blue-700' : 'text-gray-700'}>
+                <span className={annee.label === anneeActive ? 'font-semibold text-blue-700' : 'text-ink'}>
                   {annee.label}
                 </span>
                 {annee.label === anneeActive && (
@@ -140,7 +141,7 @@ function YearSwitcher() {
           </div>
 
           {/* Divider */}
-          <div className="border-t border-gray-100" />
+          <div className="border-t border-line" />
 
           {/* Add new year */}
           {adding ? (
@@ -188,18 +189,18 @@ export function Sidebar() {
   }
 
   return (
-    <aside className="sidebar-nav w-[232px] shrink-0 h-screen sticky top-0 bg-white/95 backdrop-blur-sm border-r border-gray-200/80 flex flex-col">
+    <aside className="sidebar-nav w-[232px] shrink-0 h-screen sticky top-0 bg-surface/95 backdrop-blur-sm border-r border-line/80 flex flex-col">
       {/* Logo */}
-      <div className="flex items-center gap-2.5 px-4 h-14 border-b border-gray-200/70 shrink-0">
+      <div className="flex items-center gap-2.5 px-4 h-14 border-b border-line/70 shrink-0">
         <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center shadow-sm ring-1 ring-blue-900/10">
           <GraduationCap size={17} className="text-white" />
         </div>
-        <span className="text-[17px] font-semibold text-gray-900 tracking-tight font-display">GestClasse</span>
+        <span className="text-[17px] font-semibold text-ink tracking-tight font-display">GestClasse</span>
       </div>
 
       {/* Nav */}
       <nav className="flex-1 py-4 overflow-y-auto">
-        <p className="px-4 mb-2 text-[10px] font-semibold text-gray-400 uppercase tracking-[0.12em]">
+        <p className="px-4 mb-2 text-[10px] font-semibold text-faint uppercase tracking-[0.12em]">
           Menu
         </p>
         <div className="px-2.5 space-y-1">
@@ -212,8 +213,8 @@ export function Sidebar() {
                 className={[
                   'group relative flex items-center gap-3 px-3 h-9 rounded-lg text-[13px] font-medium transition-all duration-150',
                   active
-                    ? 'bg-blue-50 text-blue-800 shadow-[inset_0_0_0_1px_rgba(55,79,143,0.10)]'
-                    : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900',
+                    ? 'bg-blue-50 text-blue-800 dark:bg-blue-500/15 dark:text-blue-200 shadow-[inset_0_0_0_1px_rgba(109,74,168,0.12)]'
+                    : 'text-muted hover:bg-canvas hover:text-ink',
                 ].join(' ')}
               >
                 {/* Active accent bar */}
@@ -225,7 +226,7 @@ export function Sidebar() {
                 />
                 <item.icon
                   size={16}
-                  className={active ? 'text-blue-600' : 'text-gray-400 group-hover:text-gray-600'}
+                  className={active ? 'text-blue-600 dark:text-blue-300' : 'text-faint group-hover:text-muted'}
                 />
                 {item.label}
               </Link>
@@ -234,21 +235,22 @@ export function Sidebar() {
         </div>
       </nav>
 
-      {/* Footer — year switcher + logout + build badge */}
-      <div className="px-2.5 py-3 border-t border-gray-200/70 shrink-0 flex flex-col gap-1">
+      {/* Footer — year switcher + theme + logout + build badge */}
+      <div className="px-2.5 py-3 border-t border-line/70 shrink-0 flex flex-col gap-1">
         <YearSwitcher />
+        <ThemeToggle />
         <button
           type="button"
           onClick={async () => {
             await fetch('/api/auth/logout', { method: 'POST' })
             window.location.href = '/login'
           }}
-          className="flex items-center gap-2.5 px-3 h-9 rounded-lg text-[12.5px] font-medium text-gray-500 hover:bg-red-50 hover:text-red-600 transition-colors"
+          className="flex items-center gap-2.5 px-3 h-9 rounded-lg text-[12.5px] font-medium text-muted hover:bg-red-50 hover:text-red-600 dark:hover:bg-red-500/15 dark:hover:text-red-300 transition-colors"
         >
           <LogOut size={15} />
           Se déconnecter
         </button>
-        <div className="px-3 pt-1 text-[9px] text-gray-300 font-mono select-none tracking-wide" title="Identifiant du déploiement actuel">
+        <div className="px-3 pt-1 text-[9px] text-faint font-mono select-none tracking-wide" title="Identifiant du déploiement actuel">
           build {BUILD_ID}
         </div>
       </div>

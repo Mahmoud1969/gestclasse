@@ -42,9 +42,9 @@ const PIE_COLORS = ['#16a34a', '#dc2626']
 
 function StatValue({ label, value, mono = false }: { label: string; value: string | number; mono?: boolean }) {
   return (
-    <div className="flex justify-between items-center py-2 border-b border-gray-100 last:border-0">
-      <span className="text-[12px] text-gray-600">{label}</span>
-      <span className={['text-[13px] font-semibold text-gray-900', mono ? 'font-mono' : ''].join(' ')}>{value}</span>
+    <div className="flex justify-between items-center py-2 border-b border-line last:border-0">
+      <span className="text-[12px] text-muted">{label}</span>
+      <span className={['text-[13px] font-semibold text-ink', mono ? 'font-mono' : ''].join(' ')}>{value}</span>
     </div>
   )
 }
@@ -188,7 +188,7 @@ export default function NotesPage() {
       <Toolbar
         title={
           <div className="flex items-center gap-3">
-            <span className="text-[14px] font-semibold text-gray-900">Notes</span>
+            <span className="text-[14px] font-semibold text-ink">Notes</span>
             <Select
               options={classOptions}
               value={classeId}
@@ -233,20 +233,20 @@ export default function NotesPage() {
           <div className="overflow-auto">
             <table className="w-full text-[13px] border-collapse">
               <thead>
-                <tr className="bg-gray-50 border-b border-gray-200 sticky top-0 z-10">
-                  <th className="px-3 py-2 text-left text-[11px] font-semibold text-gray-500 uppercase tracking-wide w-10">#</th>
-                  <th className="px-3 py-2 text-left text-[11px] font-semibold text-gray-500 uppercase tracking-wide">Nom</th>
-                  <th className="px-3 py-2 text-left text-[11px] font-semibold text-gray-500 uppercase tracking-wide">Prénom</th>
-                  <th className="px-3 py-2 text-left text-[11px] font-semibold text-gray-500 uppercase tracking-wide w-36">
+                <tr className="bg-canvas border-b border-line sticky top-0 z-10">
+                  <th className="px-3 py-2 text-left text-[11px] font-semibold text-muted uppercase tracking-wide w-10">#</th>
+                  <th className="px-3 py-2 text-left text-[11px] font-semibold text-muted uppercase tracking-wide">Nom</th>
+                  <th className="px-3 py-2 text-left text-[11px] font-semibold text-muted uppercase tracking-wide">Prénom</th>
+                  <th className="px-3 py-2 text-left text-[11px] font-semibold text-muted uppercase tracking-wide w-36">
                     Devoir Contrôle /20
-                    <span className="font-normal text-gray-400 ml-1">(coeff 1, A-J possible)</span>
+                    <span className="font-normal text-faint ml-1">(coeff 1, A-J possible)</span>
                   </th>
-                  <th className="px-3 py-2 text-left text-[11px] font-semibold text-gray-500 uppercase tracking-wide w-36">
+                  <th className="px-3 py-2 text-left text-[11px] font-semibold text-muted uppercase tracking-wide w-36">
                     Devoir Synthèse /20
-                    <span className="font-normal text-gray-400 ml-1">(coeff 2)</span>
+                    <span className="font-normal text-faint ml-1">(coeff 2)</span>
                   </th>
-                  <th className="px-3 py-2 text-left text-[11px] font-semibold text-gray-500 uppercase tracking-wide w-24">Moyenne /20</th>
-                  <th className="px-3 py-2 text-left text-[11px] font-semibold text-gray-500 uppercase tracking-wide w-28">Mention</th>
+                  <th className="px-3 py-2 text-left text-[11px] font-semibold text-muted uppercase tracking-wide w-24">Moyenne /20</th>
+                  <th className="px-3 py-2 text-left text-[11px] font-semibold text-muted uppercase tracking-wide w-28">Mention</th>
                 </tr>
               </thead>
               <tbody>
@@ -268,12 +268,12 @@ export default function NotesPage() {
                     const moy = note ? moyenneTrimestre(note) : null
                     const mention = getMention(moy)
                     return (
-                      <tr key={eleve.id} className="border-b border-gray-100 hover:bg-gray-50 transition-colors" style={{ height: 36 }}>
+                      <tr key={eleve.id} className="border-b border-line hover:bg-canvas transition-colors" style={{ height: 36 }}>
                         <td className="px-3 py-0">
-                          <span className="text-gray-400 font-mono text-[12px]">{i + 1}</span>
+                          <span className="text-faint font-mono text-[12px]">{i + 1}</span>
                         </td>
-                        <td className="px-3 py-0 font-medium text-gray-900">{eleve.nom}</td>
-                        <td className="px-3 py-0 text-gray-700">{eleve.prenom}</td>
+                        <td className="px-3 py-0 font-medium text-ink">{eleve.nom}</td>
+                        <td className="px-3 py-0 text-ink">{eleve.prenom}</td>
                         <td className="px-1 py-0.5 w-36">
                           <NoteInput
                             id={`nc-dc-${i}`}
@@ -297,14 +297,14 @@ export default function NotesPage() {
                               {moy.toFixed(2)}
                             </span>
                           ) : (
-                            <span className="text-gray-300 font-mono text-[12px]">—</span>
+                            <span className="text-faint font-mono text-[12px]">—</span>
                           )}
                         </td>
                         <td className="px-3 py-0 w-28">
                           {moy !== null ? (
                             <Badge variant={mention.variant as 'success' | 'info' | 'teal' | 'warning' | 'danger' | 'neutral'}>{mention.label}</Badge>
                           ) : (
-                            <span className="text-gray-300 text-[12px]">—</span>
+                            <span className="text-faint text-[12px]">—</span>
                           )}
                         </td>
                       </tr>
@@ -317,14 +317,14 @@ export default function NotesPage() {
 
           {/* Stats panel */}
           {mounted && moyennes.length > 0 && statsData && (
-            <div className="p-5 border-t border-gray-200 bg-gray-50/50">
-              <h2 className="text-[12px] font-semibold text-gray-500 uppercase tracking-wide mb-4 no-print">
+            <div className="p-5 border-t border-line bg-canvas/50">
+              <h2 className="text-[12px] font-semibold text-muted uppercase tracking-wide mb-4 no-print">
                 Analyse statistique — Trimestre {trimestre}
               </h2>
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
                 {/* Stat cards */}
-                <div className="bg-white border border-gray-200 rounded-lg p-4">
-                  <h3 className="text-[11px] font-semibold text-gray-500 uppercase tracking-wide mb-3">Statistiques</h3>
+                <div className="bg-surface border border-line rounded-lg p-4">
+                  <h3 className="text-[11px] font-semibold text-muted uppercase tracking-wide mb-3">Statistiques</h3>
                   <StatValue label="Moyenne de la classe" value={statsData.avg.toFixed(2)} mono />
                   <StatValue label="Note la plus haute" value={statsData.max.toFixed(2)} mono />
                   <StatValue label="Note la plus basse" value={statsData.min.toFixed(2)} mono />
@@ -344,8 +344,8 @@ export default function NotesPage() {
                 {/* Charts */}
                 <div className="flex flex-col gap-4 no-print">
                   {/* Bar chart */}
-                  <div className="bg-white border border-gray-200 rounded-lg p-4">
-                    <h3 className="text-[11px] font-semibold text-gray-500 uppercase tracking-wide mb-3">
+                  <div className="bg-surface border border-line rounded-lg p-4">
+                    <h3 className="text-[11px] font-semibold text-muted uppercase tracking-wide mb-3">
                       Distribution des notes
                     </h3>
                     <ResponsiveContainer width="100%" height={140}>
@@ -361,8 +361,8 @@ export default function NotesPage() {
 
                   {/* Pie + Line side by side */}
                   <div className="grid grid-cols-2 gap-4">
-                    <div className="bg-white border border-gray-200 rounded-lg p-4">
-                      <h3 className="text-[11px] font-semibold text-gray-500 uppercase tracking-wide mb-3">
+                    <div className="bg-surface border border-line rounded-lg p-4">
+                      <h3 className="text-[11px] font-semibold text-muted uppercase tracking-wide mb-3">
                         Réussite / Échec
                       </h3>
                       <ResponsiveContainer width="100%" height={120}>
@@ -386,8 +386,8 @@ export default function NotesPage() {
                     </div>
 
                     {lineData && (
-                      <div className="bg-white border border-gray-200 rounded-lg p-4">
-                        <h3 className="text-[11px] font-semibold text-gray-500 uppercase tracking-wide mb-3">
+                      <div className="bg-surface border border-line rounded-lg p-4">
+                        <h3 className="text-[11px] font-semibold text-muted uppercase tracking-wide mb-3">
                           Évolution trimestrielle
                         </h3>
                         <ResponsiveContainer width="100%" height={120}>

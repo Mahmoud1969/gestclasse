@@ -134,26 +134,26 @@ export default function ClassesPage() {
       size: 48,
       enableSorting: false,
       cell: (info) => (
-        <span className="text-gray-400 font-mono text-[12px]">{info.getValue()}</span>
+        <span className="text-faint font-mono text-[12px]">{info.getValue()}</span>
       ),
     }),
     col.accessor('nom', {
       header: 'Nom de la Classe',
       cell: (info) => (
-        <span className="font-medium text-gray-900">{info.getValue()}</span>
+        <span className="font-medium text-ink">{info.getValue()}</span>
       ),
     }),
     col.accessor('nbEleves', {
       header: 'Nb Élèves',
       size: 100,
-      cell: (info) => <span className="text-gray-700">{info.getValue()}</span>,
+      cell: (info) => <span className="text-ink">{info.getValue()}</span>,
     }),
     col.accessor('moyenne', {
       header: 'Moyenne',
       size: 100,
       cell: (info) => {
         const val = info.getValue()
-        if (val === null) return <span className="text-gray-400 font-mono text-[12px]">—</span>
+        if (val === null) return <span className="text-faint font-mono text-[12px]">—</span>
         return (
           <span className={['font-mono text-[12px] font-medium', val >= 10 ? 'text-green-700' : 'text-red-700'].join(' ')}>
             {val.toFixed(2)}
@@ -169,13 +169,13 @@ export default function ClassesPage() {
         <div className="flex items-center gap-1 justify-end">
           <button
             onClick={(e) => { e.stopPropagation(); openEdit(row.original) }}
-            className="p-1.5 rounded hover:bg-gray-100 text-gray-400 hover:text-gray-600 transition-colors"
+            className="p-1.5 rounded hover:bg-surface2 text-faint hover:text-muted transition-colors"
           >
             <Pencil size={13} />
           </button>
           <button
             onClick={(e) => { e.stopPropagation(); setDeleteTarget(row.original) }}
-            className="p-1.5 rounded hover:bg-red-50 text-gray-400 hover:text-red-600 transition-colors"
+            className="p-1.5 rounded hover:bg-red-50 text-faint hover:text-red-600 transition-colors"
           >
             <Trash2 size={13} />
           </button>
@@ -202,12 +202,12 @@ export default function ClassesPage() {
         actions={
           <>
             <div className="relative">
-              <Search size={13} className="absolute left-2.5 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none" />
+              <Search size={13} className="absolute left-2.5 top-1/2 -translate-y-1/2 text-faint pointer-events-none" />
               <input
                 value={globalFilter}
                 onChange={(e) => setGlobalFilter(e.target.value)}
                 placeholder="Rechercher…"
-                className="h-8 pl-8 pr-3 text-[12px] border border-gray-300 rounded bg-white focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 w-48"
+                className="h-8 pl-8 pr-3 text-[12px] border border-line-strong rounded bg-surface focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 w-48"
               />
             </div>
             <Button variant="primary" size="sm" icon={<Plus size={13} />} onClick={openCreate}>
@@ -220,7 +220,7 @@ export default function ClassesPage() {
       <div className="flex-1 overflow-auto">
         <table className="w-full text-[13px] border-collapse">
           <thead>
-            <tr className="bg-gray-50 border-b border-gray-200 sticky top-0 z-10">
+            <tr className="bg-canvas border-b border-line sticky top-0 z-10">
               {table.getHeaderGroups().map((hg) =>
                 hg.headers.map((header) => (
                   <th
@@ -228,15 +228,15 @@ export default function ClassesPage() {
                     onClick={header.column.getToggleSortingHandler()}
                     style={{ width: header.getSize() !== 150 ? header.getSize() : undefined }}
                     className={[
-                      'px-3 py-2 text-left text-[11px] font-semibold text-gray-500 uppercase tracking-wide select-none',
-                      header.column.getCanSort() ? 'cursor-pointer hover:text-gray-800' : '',
+                      'px-3 py-2 text-left text-[11px] font-semibold text-muted uppercase tracking-wide select-none',
+                      header.column.getCanSort() ? 'cursor-pointer hover:text-ink' : '',
                       header.id === 'actions' ? 'text-right pr-4' : '',
                     ].join(' ')}
                   >
                     <div className={['flex items-center gap-1', header.id === 'actions' ? 'justify-end' : ''].join(' ')}>
                       {flexRender(header.column.columnDef.header, header.getContext())}
                       {header.column.getCanSort() && (
-                        <span className="text-gray-400">
+                        <span className="text-faint">
                           {header.column.getIsSorted() === 'asc' ? (
                             <ChevronUp size={12} className="text-blue-500" />
                           ) : header.column.getIsSorted() === 'desc' ? (
@@ -271,7 +271,7 @@ export default function ClassesPage() {
                 <tr
                   key={row.id}
                   onClick={() => router.push(`/classes/${row.original.id}/eleves`)}
-                  className="border-b border-gray-100 hover:bg-gray-50 cursor-pointer transition-colors"
+                  className="border-b border-line hover:bg-canvas cursor-pointer transition-colors"
                   style={{ height: 36 }}
                 >
                   {row.getVisibleCells().map((cell) => (

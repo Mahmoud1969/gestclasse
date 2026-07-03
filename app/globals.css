@@ -3,28 +3,41 @@
 @tailwind utilities;
 
 :root {
-  --color-bg: #ffffff;
-  --color-surface: #f7f8fb;
-  --color-border: #e8eaf0;
-  --color-border-strong: #d3d7e0;
-  --color-text: #1a1f2e;
-  --color-text-muted: #697089;
-  --color-accent: #374f8f;
-  --color-accent-hover: #2d4076;
-  --color-accent-light: #f1f4fb;
+  /* Semantic tokens as space-separated RGB channels (for rgb(var() / alpha)) */
+  --c-surface: 255 255 255;
+  --c-surface2: 243 244 248;
+  --c-canvas: 247 248 251;
+  --c-ink: 26 31 46;
+  --c-muted: 105 112 137;
+  --c-faint: 156 163 184;
+  --c-line: 232 234 240;
+  --c-line-strong: 211 215 224;
+
+  --color-accent: #6d4aa8;
+  --color-accent-hover: #5a3d8a;
+  --color-accent-light: #f5f2fb;
   --color-gold: #c2853a;
-  --color-success: #16a34a;
-  --color-success-light: #f0fdf4;
-  --color-danger: #dc2626;
-  --color-danger-light: #fef2f2;
-  --color-warning: #d97706;
-  --color-warning-light: #fffbeb;
   --radius-sm: 5px;
   --radius-md: 8px;
   --radius-lg: 12px;
   --font-sans: var(--font-dm-sans), sans-serif;
   --font-mono: var(--font-jetbrains-mono), monospace;
   --font-display: var(--font-display), Georgia, serif;
+}
+
+.dark {
+  --c-surface: 30 27 38;      /* slate-violet panels */
+  --c-surface2: 42 38 54;     /* raised / hover */
+  --c-canvas: 20 18 28;       /* app background */
+  --c-ink: 237 235 244;       /* primary text */
+  --c-muted: 160 162 182;     /* secondary text */
+  --c-faint: 108 110 130;     /* tertiary / placeholder */
+  --c-line: 48 44 62;         /* borders */
+  --c-line-strong: 66 60 84;  /* stronger borders */
+
+  --color-accent: #9d78d1;
+  --color-accent-light: #2a2436;
+  color-scheme: dark;
 }
 
 * {
@@ -36,13 +49,14 @@ body {
   margin: 0;
   padding: 0;
   font-family: var(--font-sans);
-  color: var(--color-text);
-  background-color: var(--color-bg);
+  color: rgb(var(--c-ink));
+  background-color: rgb(var(--c-canvas));
   font-size: 14px;
   line-height: 1.5;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 ::-webkit-scrollbar {
@@ -59,13 +73,24 @@ body {
 ::-webkit-scrollbar-thumb:hover {
   background: #a9b0c2;
 }
+.dark ::-webkit-scrollbar-thumb {
+  background: #3a3550;
+}
+.dark ::-webkit-scrollbar-thumb:hover {
+  background: #514a6b;
+}
 
-/* Subtle atmospheric background for full-bleed surfaces (login, bulletin) */
-.bg-canvas {
-  background-color: #f5f6fb;
+/* Subtle atmospheric background for full-bleed surfaces (login) */
+.bg-atmosphere {
+  background-color: rgb(var(--c-canvas));
   background-image:
-    radial-gradient(at 12% 8%, rgba(55, 79, 143, 0.06) 0px, transparent 55%),
-    radial-gradient(at 88% 92%, rgba(194, 133, 58, 0.05) 0px, transparent 50%);
+    radial-gradient(at 12% 8%, rgba(109, 74, 168, 0.10) 0px, transparent 55%),
+    radial-gradient(at 88% 92%, rgba(194, 133, 58, 0.06) 0px, transparent 50%);
+}
+.dark .bg-atmosphere {
+  background-image:
+    radial-gradient(at 12% 8%, rgba(157, 120, 209, 0.14) 0px, transparent 55%),
+    radial-gradient(at 88% 92%, rgba(194, 133, 58, 0.08) 0px, transparent 55%);
 }
 
 /* Refined hairline separators */

@@ -37,17 +37,17 @@ export function Drawer({ open, onClose, title, children, width = 'w-[480px]' }: 
       <div className="absolute inset-0 bg-black/20 backdrop-blur-[1px]" onClick={onClose} />
       <div
         className={[
-          'relative z-10 h-full bg-white shadow-2xl border-l border-gray-200 flex flex-col',
+          'relative z-10 h-full bg-surface shadow-2xl border-l border-line flex flex-col',
           'animate-slide-in-right',
           width,
         ].join(' ')}
       >
         {/* Header */}
-        <div className="flex items-center justify-between px-5 py-3.5 border-b border-gray-200 shrink-0">
-          <h2 className="text-[14px] font-semibold text-gray-900">{title}</h2>
+        <div className="flex items-center justify-between px-5 py-3.5 border-b border-line shrink-0">
+          <h2 className="text-[14px] font-semibold text-ink">{title}</h2>
           <button
             onClick={onClose}
-            className="p-1 rounded hover:bg-gray-100 text-gray-500 hover:text-gray-700 transition-colors"
+            className="p-1 rounded hover:bg-surface2 text-muted hover:text-ink transition-colors"
           >
             <X size={15} />
           </button>

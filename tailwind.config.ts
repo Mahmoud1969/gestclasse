@@ -1,6 +1,7 @@
 import type { Config } from 'tailwindcss'
 
 const config: Config = {
+  darkMode: 'class',
   content: [
     './pages/**/*.{js,ts,jsx,tsx,mdx}',
     './components/**/*.{js,ts,jsx,tsx,mdx}',
@@ -14,23 +15,22 @@ const config: Config = {
         display: ['var(--font-display)', 'Georgia', 'serif'],
       },
       colors: {
-        // Signature "encre" (ink) palette — a deep, refined prussian-indigo.
-        // We remap Tailwind's `blue` so every existing `blue-*` class across
-        // the app instantly adopts the elegant new primary, cohesively.
+        // Signature "améthyste" palette — a deep, refined violet. We remap
+        // Tailwind's `blue` so every existing `blue-*` class adopts it cohesively.
         blue: {
-          50: '#f1f4fb',
-          100: '#e2e8f5',
-          200: '#c6d3ec',
-          300: '#9db2dd',
-          400: '#6b88c9',
-          500: '#4867b0',
-          600: '#374f8f', // primary
-          700: '#2d4076',
-          800: '#283762',
-          900: '#243052',
-          950: '#171f38',
+          50: '#f5f2fb',
+          100: '#ebe4f7',
+          200: '#d9ccf0',
+          300: '#bda6e3',
+          400: '#9d78d1',
+          500: '#8354bf',
+          600: '#6d4aa8', // primary
+          700: '#5a3d8a',
+          800: '#4b3570',
+          900: '#3f2e5c',
+          950: '#281d3d',
         },
-        // Warm signature accent — used sparingly for highlights (rank #1, etc.)
+        // Warm signature accent
         gold: {
           50: '#fbf7ef',
           100: '#f5ebd6',
@@ -43,6 +43,17 @@ const config: Config = {
           800: '#6f4227',
           900: '#5e3823',
         },
+        // Semantic surface/text/border tokens — flip between light & dark via
+        // CSS variables (see globals.css). Enables a full dark theme without
+        // per-component dark: variants.
+        surface: 'rgb(var(--c-surface) / <alpha-value>)',
+        surface2: 'rgb(var(--c-surface2) / <alpha-value>)',
+        canvas: 'rgb(var(--c-canvas) / <alpha-value>)',
+        ink: 'rgb(var(--c-ink) / <alpha-value>)',
+        muted: 'rgb(var(--c-muted) / <alpha-value>)',
+        faint: 'rgb(var(--c-faint) / <alpha-value>)',
+        line: 'rgb(var(--c-line) / <alpha-value>)',
+        'line-strong': 'rgb(var(--c-line-strong) / <alpha-value>)',
       },
       boxShadow: {
         card: '0 1px 2px rgba(16, 24, 40, 0.04), 0 1px 3px rgba(16, 24, 40, 0.06)',

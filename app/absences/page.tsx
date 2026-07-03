@@ -140,7 +140,7 @@ export default function AbsencesPage() {
       <Toolbar
         title={
           <div className="flex items-center gap-3">
-            <span className="text-[14px] font-semibold text-gray-900">Absences</span>
+            <span className="text-[14px] font-semibold text-ink">Absences</span>
             <Select
               options={classOptions}
               value={classeId}
@@ -162,15 +162,15 @@ export default function AbsencesPage() {
         <div className="overflow-auto flex-1">
           <table className="w-full text-[13px] border-collapse">
             <thead>
-              <tr className="bg-gray-50 border-b border-gray-200 sticky top-0 z-10">
-                <th className="px-3 py-2 text-left text-[11px] font-semibold text-gray-500 uppercase tracking-wide w-10">#</th>
-                <th className="px-3 py-2 text-left text-[11px] font-semibold text-gray-500 uppercase tracking-wide">Nom</th>
-                <th className="px-3 py-2 text-left text-[11px] font-semibold text-gray-500 uppercase tracking-wide">Prénom</th>
-                <th className="px-3 py-2 text-center text-[11px] font-semibold text-gray-500 uppercase tracking-wide">Abs. T1 (h)</th>
-                <th className="px-3 py-2 text-center text-[11px] font-semibold text-gray-500 uppercase tracking-wide">Abs. T2 (h)</th>
-                <th className="px-3 py-2 text-center text-[11px] font-semibold text-gray-500 uppercase tracking-wide">Abs. T3 (h)</th>
-                <th className="px-3 py-2 text-center text-[11px] font-semibold text-gray-500 uppercase tracking-wide">Total</th>
-                <th className="px-3 py-2 text-left text-[11px] font-semibold text-gray-500 uppercase tracking-wide">Statut</th>
+              <tr className="bg-canvas border-b border-line sticky top-0 z-10">
+                <th className="px-3 py-2 text-left text-[11px] font-semibold text-muted uppercase tracking-wide w-10">#</th>
+                <th className="px-3 py-2 text-left text-[11px] font-semibold text-muted uppercase tracking-wide">Nom</th>
+                <th className="px-3 py-2 text-left text-[11px] font-semibold text-muted uppercase tracking-wide">Prénom</th>
+                <th className="px-3 py-2 text-center text-[11px] font-semibold text-muted uppercase tracking-wide">Abs. T1 (h)</th>
+                <th className="px-3 py-2 text-center text-[11px] font-semibold text-muted uppercase tracking-wide">Abs. T2 (h)</th>
+                <th className="px-3 py-2 text-center text-[11px] font-semibold text-muted uppercase tracking-wide">Abs. T3 (h)</th>
+                <th className="px-3 py-2 text-center text-[11px] font-semibold text-muted uppercase tracking-wide">Total</th>
+                <th className="px-3 py-2 text-left text-[11px] font-semibold text-muted uppercase tracking-wide">Statut</th>
               </tr>
             </thead>
             <tbody>
@@ -193,31 +193,31 @@ export default function AbsencesPage() {
                     <tr
                       key={row.eleve.id}
                       onClick={() => setDrawerEleve(row.eleve)}
-                      className="border-b border-gray-100 hover:bg-gray-50 cursor-pointer transition-colors"
+                      className="border-b border-line hover:bg-canvas cursor-pointer transition-colors"
                       style={{ height: 36 }}
                     >
                       <td className="px-3 py-0">
-                        <span className="text-gray-400 font-mono text-[12px]">{row.eleve.numero}</span>
+                        <span className="text-faint font-mono text-[12px]">{row.eleve.numero}</span>
                       </td>
-                      <td className="px-3 py-0 font-medium text-gray-900">{row.eleve.nom}</td>
-                      <td className="px-3 py-0 text-gray-700">{row.eleve.prenom}</td>
+                      <td className="px-3 py-0 font-medium text-ink">{row.eleve.nom}</td>
+                      <td className="px-3 py-0 text-ink">{row.eleve.prenom}</td>
                       <td className="px-3 py-0 text-center">
-                        <span className={['font-mono text-[12px]', row.t1 > 0 ? 'text-gray-800' : 'text-gray-300'].join(' ')}>
+                        <span className={['font-mono text-[12px]', row.t1 > 0 ? 'text-ink' : 'text-faint'].join(' ')}>
                           {row.t1 || '—'}
                         </span>
                       </td>
                       <td className="px-3 py-0 text-center">
-                        <span className={['font-mono text-[12px]', row.t2 > 0 ? 'text-gray-800' : 'text-gray-300'].join(' ')}>
+                        <span className={['font-mono text-[12px]', row.t2 > 0 ? 'text-ink' : 'text-faint'].join(' ')}>
                           {row.t2 || '—'}
                         </span>
                       </td>
                       <td className="px-3 py-0 text-center">
-                        <span className={['font-mono text-[12px]', row.t3 > 0 ? 'text-gray-800' : 'text-gray-300'].join(' ')}>
+                        <span className={['font-mono text-[12px]', row.t3 > 0 ? 'text-ink' : 'text-faint'].join(' ')}>
                           {row.t3 || '—'}
                         </span>
                       </td>
                       <td className="px-3 py-0 text-center">
-                        <span className="font-mono text-[12px] font-semibold text-gray-800">{row.total}h</span>
+                        <span className="font-mono text-[12px] font-semibold text-ink">{row.total}h</span>
                       </td>
                       <td className="px-3 py-0">
                         <Badge variant={statut.variant}>{statut.label}</Badge>
@@ -253,7 +253,7 @@ export default function AbsencesPage() {
                 </Button>
               ) : (
                 <div className="border border-blue-200 bg-blue-50/40 rounded-lg p-4">
-                  <h3 className="text-[12px] font-semibold text-gray-700 mb-3">Nouvelle absence</h3>
+                  <h3 className="text-[12px] font-semibold text-ink mb-3">Nouvelle absence</h3>
                   <form onSubmit={handleSubmit(onAddAbsence)} className="flex flex-col gap-3">
                     <Input
                       label="Date"
@@ -272,10 +272,10 @@ export default function AbsencesPage() {
                       {...register('duree')}
                     />
                     <div className="flex flex-col gap-1">
-                      <label className="text-[12px] font-medium text-gray-700">Trimestre</label>
+                      <label className="text-[12px] font-medium text-ink">Trimestre</label>
                       <select
                         {...register('trimestre')}
-                        className="h-8 w-full px-2.5 text-[13px] text-gray-900 bg-white border border-gray-300 rounded focus:outline-none focus:border-blue-500"
+                        className="h-8 w-full px-2.5 text-[13px] text-ink bg-surface border border-line-strong rounded focus:outline-none focus:border-blue-500"
                       >
                         <option value="1">Trimestre 1</option>
                         <option value="2">Trimestre 2</option>
@@ -284,7 +284,7 @@ export default function AbsencesPage() {
                     </div>
                     <label className="flex items-center gap-2 cursor-pointer">
                       <input type="checkbox" {...register('justifiee')} className="w-4 h-4 accent-blue-600" />
-                      <span className="text-[13px] text-gray-700">Absence justifiée</span>
+                      <span className="text-[13px] text-ink">Absence justifiée</span>
                     </label>
                     <div className="flex gap-2 pt-1">
                       <Button variant="secondary" size="sm" type="button" onClick={() => { setAddingAbsence(false); reset() }}>
@@ -300,20 +300,20 @@ export default function AbsencesPage() {
 
               {/* Absence log */}
               <div>
-                <p className="text-[11px] font-semibold text-gray-500 uppercase tracking-wide mb-2">
+                <p className="text-[11px] font-semibold text-muted uppercase tracking-wide mb-2">
                   Historique — {drawerAbsences.reduce((s, a) => s + a.duree, 0)}h total
                 </p>
                 {drawerAbsences.length === 0 ? (
-                  <p className="text-[12px] text-gray-400 py-3">Aucune absence enregistrée</p>
+                  <p className="text-[12px] text-faint py-3">Aucune absence enregistrée</p>
                 ) : (
-                  <div className="border border-gray-200 rounded-lg overflow-hidden">
+                  <div className="border border-line rounded-lg overflow-hidden">
                     <table className="w-full text-[12px]">
                       <thead>
-                        <tr className="bg-gray-50 border-b border-gray-200">
-                          <th className="px-3 py-2 text-left text-[11px] font-semibold text-gray-500 uppercase tracking-wide">Date</th>
-                          <th className="px-3 py-2 text-left text-[11px] font-semibold text-gray-500 uppercase tracking-wide">Durée</th>
-                          <th className="px-3 py-2 text-left text-[11px] font-semibold text-gray-500 uppercase tracking-wide">Justifiée</th>
-                          <th className="px-3 py-2 text-left text-[11px] font-semibold text-gray-500 uppercase tracking-wide">T.</th>
+                        <tr className="bg-canvas border-b border-line">
+                          <th className="px-3 py-2 text-left text-[11px] font-semibold text-muted uppercase tracking-wide">Date</th>
+                          <th className="px-3 py-2 text-left text-[11px] font-semibold text-muted uppercase tracking-wide">Durée</th>
+                          <th className="px-3 py-2 text-left text-[11px] font-semibold text-muted uppercase tracking-wide">Justifiée</th>
+                          <th className="px-3 py-2 text-left text-[11px] font-semibold text-muted uppercase tracking-wide">T.</th>
                           <th className="px-3 py-2 w-8"></th>
                         </tr>
                       </thead>
@@ -322,7 +322,7 @@ export default function AbsencesPage() {
                           .slice()
                           .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
                           .map((abs) => (
-                            <tr key={abs.id} className="border-b border-gray-100 last:border-0 hover:bg-gray-50">
+                            <tr key={abs.id} className="border-b border-line last:border-0 hover:bg-canvas">
                               <td className="px-3 py-1.5 font-mono">{format(new Date(abs.date), 'dd/MM/yyyy')}</td>
                               <td className="px-3 py-1.5">{abs.duree}h</td>
                               <td className="px-3 py-1.5">
@@ -330,11 +330,11 @@ export default function AbsencesPage() {
                                   {abs.justifiee ? 'Oui' : 'Non'}
                                 </Badge>
                               </td>
-                              <td className="px-3 py-1.5 text-gray-600">T{abs.trimestre}</td>
+                              <td className="px-3 py-1.5 text-muted">T{abs.trimestre}</td>
                               <td className="px-2 py-1.5">
                                 <button
                                   onClick={() => setDeleteTarget(abs.id)}
-                                  className="p-1 rounded hover:bg-red-50 text-gray-400 hover:text-red-500 transition-colors"
+                                  className="p-1 rounded hover:bg-red-50 text-faint hover:text-red-500 transition-colors"
                                 >
                                   <Trash2 size={12} />
                                 </button>

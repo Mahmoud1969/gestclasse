@@ -11,13 +11,13 @@ export function Toolbar({ title, actions, className = '' }: ToolbarProps) {
     <div
       className={[
         'sticky top-0 z-20 flex items-center justify-between h-14 px-6',
-        'bg-white/80 backdrop-blur-md border-b border-gray-200/70 shrink-0 no-print',
+        'bg-surface/80 backdrop-blur-md border-b border-line/70 shrink-0 no-print',
         className,
       ].join(' ')}
     >
       <div className="flex items-center gap-3 min-w-0">
         {typeof title === 'string' ? (
-          <h1 className="text-[16px] font-semibold text-gray-900 tracking-tight truncate font-display">{title}</h1>
+          <h1 className="text-[16px] font-semibold text-ink tracking-tight truncate font-display">{title}</h1>
         ) : (
           title
         )}

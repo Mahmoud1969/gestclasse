@@ -30,7 +30,7 @@ export function Select({
   return (
     <div className={['flex flex-col gap-1', className].join(' ')}>
       {label && (
-        <label className="text-[12px] font-medium text-gray-700 leading-none">{label}</label>
+        <label className="text-[12px] font-medium text-ink leading-none">{label}</label>
       )}
       <div className="relative">
         <select
@@ -38,10 +38,10 @@ export function Select({
           onChange={(e) => onChange(e.target.value)}
           disabled={disabled}
           className={[
-            'h-8 w-full pl-2.5 pr-7 text-[13px] text-gray-900 bg-white border border-gray-300 rounded',
+            'h-8 w-full pl-2.5 pr-7 text-[13px] text-ink bg-surface border border-line-strong rounded',
             'appearance-none cursor-pointer',
             'focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500',
-            'hover:border-gray-400 transition-colors',
+            'hover:border-line-strong transition-colors',
             disabled ? 'opacity-50 cursor-not-allowed' : '',
           ].join(' ')}
         >
@@ -58,7 +58,7 @@ export function Select({
         </select>
         <ChevronDown
           size={13}
-          className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-500 pointer-events-none"
+          className="absolute right-2 top-1/2 -translate-y-1/2 text-muted pointer-events-none"
         />
       </div>
     </div>

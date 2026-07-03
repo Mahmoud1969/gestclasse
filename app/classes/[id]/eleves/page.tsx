@@ -285,7 +285,7 @@ export default function ElevesPage() {
   }, [classEleves, notes, absences])
 
   function MoyCell({ val }: { val: number | null }) {
-    if (val === null) return <span className="text-gray-300 font-mono text-[12px]">—</span>
+    if (val === null) return <span className="text-faint font-mono text-[12px]">—</span>
     return (
       <span className={['font-mono text-[12px]', val >= 10 ? 'text-green-700' : 'text-red-700'].join(' ')}>
         {val.toFixed(2)}
@@ -298,20 +298,20 @@ export default function ElevesPage() {
       id: 'numero',
       header: '#',
       size: 44,
-      cell: (info) => <span className="text-gray-400 font-mono text-[12px]">{info.getValue()}</span>,
+      cell: (info) => <span className="text-faint font-mono text-[12px]">{info.getValue()}</span>,
     }),
     col.accessor('nom', {
       header: 'Nom',
-      cell: (info) => <span className="font-medium text-gray-900">{info.getValue()}</span>,
+      cell: (info) => <span className="font-medium text-ink">{info.getValue()}</span>,
     }),
     col.accessor('prenom', {
       header: 'Prénom',
-      cell: (info) => <span className="text-gray-700">{info.getValue()}</span>,
+      cell: (info) => <span className="text-ink">{info.getValue()}</span>,
     }),
     col.accessor('dateNaissance', {
       header: 'Date de Naissance',
       cell: (info) => (
-        <span className="text-gray-600 font-mono text-[12px]">
+        <span className="text-muted font-mono text-[12px]">
           {safeFormatDate(info.getValue())}
         </span>
       ),
@@ -331,7 +331,7 @@ export default function ElevesPage() {
       cell: (info) => (
         <button
           onClick={(e) => { e.stopPropagation(); setDrawerEleve(info.row.original) }}
-          className="font-mono text-[12px] text-gray-600 hover:text-blue-600 transition-colors underline-offset-2 hover:underline"
+          className="font-mono text-[12px] text-muted hover:text-blue-600 transition-colors underline-offset-2 hover:underline"
         >
           {info.getValue()}h
         </button>
@@ -357,7 +357,7 @@ export default function ElevesPage() {
       size: 110,
       cell: (info) => {
         const val = info.getValue()
-        if (val === null) return <span className="text-gray-300 font-mono text-[12px]">—</span>
+        if (val === null) return <span className="text-faint font-mono text-[12px]">—</span>
         return (
           <span className={['font-mono text-[12px] font-bold', val >= 10 ? 'text-green-700' : 'text-red-700'].join(' ')}>
             {val.toFixed(2)}
@@ -370,9 +370,9 @@ export default function ElevesPage() {
       size: 70,
       cell: (info) => {
         const val = info.getValue()
-        if (val === null) return <span className="text-gray-300 font-mono text-[12px]">—</span>
+        if (val === null) return <span className="text-faint font-mono text-[12px]">—</span>
         return (
-          <span className={['font-mono text-[12px] font-semibold', val === 1 ? 'text-amber-600' : 'text-gray-700'].join(' ')}>
+          <span className={['font-mono text-[12px] font-semibold', val === 1 ? 'text-amber-600' : 'text-ink'].join(' ')}>
             {val === 1 ? '🥇 ' : ''}{val}
           </span>
         )
@@ -398,19 +398,19 @@ export default function ElevesPage() {
             href={`/bulletin/${classeId}/${row.original.id}`}
             onClick={(e) => e.stopPropagation()}
             title="Bulletin de l'élève"
-            className="p-1.5 rounded hover:bg-blue-50 text-gray-400 hover:text-blue-600 transition-colors"
+            className="p-1.5 rounded hover:bg-blue-50 text-faint hover:text-blue-600 transition-colors"
           >
             <FileText size={13} />
           </Link>
           <button
             onClick={(e) => { e.stopPropagation(); openEdit(row.original) }}
-            className="p-1.5 rounded hover:bg-gray-100 text-gray-400 hover:text-gray-600 transition-colors"
+            className="p-1.5 rounded hover:bg-surface2 text-faint hover:text-muted transition-colors"
           >
             <Pencil size={13} />
           </button>
           <button
             onClick={(e) => { e.stopPropagation(); setDeleteTarget(row.original) }}
-            className="p-1.5 rounded hover:bg-red-50 text-gray-400 hover:text-red-600 transition-colors"
+            className="p-1.5 rounded hover:bg-red-50 text-faint hover:text-red-600 transition-colors"
           >
             <Trash2 size={13} />
           </button>
@@ -437,29 +437,29 @@ export default function ElevesPage() {
           <div className="flex items-center gap-3">
             <Link
               href="/classes"
-              className="flex items-center gap-1.5 text-[13px] text-gray-500 hover:text-gray-700 transition-colors"
+              className="flex items-center gap-1.5 text-[13px] text-muted hover:text-ink transition-colors"
             >
               <ArrowLeft size={14} />
               Retour
             </Link>
-            <span className="text-gray-300">|</span>
-            <span className="text-[14px] font-semibold text-gray-900">
+            <span className="text-faint">|</span>
+            <span className="text-[14px] font-semibold text-ink">
               {classe?.nom ?? '…'}
             </span>
             {classe && (
-              <span className="text-[12px] text-gray-500 font-normal">{classe.niveau}</span>
+              <span className="text-[12px] text-muted font-normal">{classe.niveau}</span>
             )}
           </div>
         }
         actions={
           <>
             <div className="relative">
-              <Search size={13} className="absolute left-2.5 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none" />
+              <Search size={13} className="absolute left-2.5 top-1/2 -translate-y-1/2 text-faint pointer-events-none" />
               <input
                 value={globalFilter}
                 onChange={(e) => setGlobalFilter(e.target.value)}
                 placeholder="Rechercher…"
-                className="h-8 pl-8 pr-3 text-[12px] border border-gray-300 rounded bg-white focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 w-40"
+                className="h-8 pl-8 pr-3 text-[12px] border border-line-strong rounded bg-surface focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 w-40"
               />
             </div>
             <Button variant="secondary" size="sm" icon={<Upload size={13} />} onClick={() => setImportOpen(true)}>
@@ -478,7 +478,7 @@ export default function ElevesPage() {
       <div className="flex-1 overflow-auto">
         <table className="w-full text-[13px] border-collapse">
           <thead>
-            <tr className="bg-gray-50 border-b border-gray-200 sticky top-0 z-10">
+            <tr className="bg-canvas border-b border-line sticky top-0 z-10">
               {table.getHeaderGroups().map((hg) =>
                 hg.headers.map((header) => (
                   <th
@@ -486,15 +486,15 @@ export default function ElevesPage() {
                     onClick={header.column.getToggleSortingHandler()}
                     style={{ width: header.getSize() !== 150 ? header.getSize() : undefined, minWidth: header.column.id === 'nom' || header.column.id === 'prenom' ? 100 : undefined }}
                     className={[
-                      'px-3 py-2 text-left text-[11px] font-semibold text-gray-500 uppercase tracking-wide select-none whitespace-nowrap',
-                      header.column.getCanSort() ? 'cursor-pointer hover:text-gray-800' : '',
+                      'px-3 py-2 text-left text-[11px] font-semibold text-muted uppercase tracking-wide select-none whitespace-nowrap',
+                      header.column.getCanSort() ? 'cursor-pointer hover:text-ink' : '',
                       header.id === 'actions' ? 'text-right pr-4' : '',
                     ].join(' ')}
                   >
                     <div className={['flex items-center gap-1', header.id === 'actions' ? 'justify-end' : ''].join(' ')}>
                       {flexRender(header.column.columnDef.header, header.getContext())}
                       {header.column.getCanSort() && (
-                        <span className="text-gray-400">
+                        <span className="text-faint">
                           {header.column.getIsSorted() === 'asc' ? (
                             <ChevronUp size={12} className="text-blue-500" />
                           ) : header.column.getIsSorted() === 'desc' ? (
@@ -529,7 +529,7 @@ export default function ElevesPage() {
                 <tr
                   key={row.id}
                   onClick={() => setDrawerEleve(row.original)}
-                  className="border-b border-gray-100 hover:bg-gray-50 cursor-pointer transition-colors"
+                  className="border-b border-line hover:bg-canvas cursor-pointer transition-colors"
                   style={{ height: 36 }}
                 >
                   {row.getVisibleCells().map((cell) => (
@@ -584,7 +584,7 @@ export default function ElevesPage() {
             error={dateError}
           />
           <div className="flex flex-col gap-1">
-            <label className="text-[12px] font-medium text-gray-700">Redoublant</label>
+            <label className="text-[12px] font-medium text-ink">Redoublant</label>
             <label className="flex items-center gap-2 cursor-pointer">
               <input
                 type="checkbox"
@@ -592,7 +592,7 @@ export default function ElevesPage() {
                 onChange={(e) => setRedoublantInput(e.target.checked)}
                 className="w-4 h-4 accent-blue-600"
               />
-              <span className="text-[13px] text-gray-700">Oui, cet élève redouble</span>
+              <span className="text-[13px] text-ink">Oui, cet élève redouble</span>
             </label>
           </div>
         </form>
@@ -616,36 +616,36 @@ export default function ElevesPage() {
         }
       >
         <div className="flex flex-col gap-3">
-          <p className="text-[12px] text-gray-600 leading-relaxed">
+          <p className="text-[12px] text-muted leading-relaxed">
             Colle une liste d&apos;élèves (une ligne par élève). Tu peux copier-coller
             directement depuis Excel. Colonnes attendues, séparées par une tabulation,
             une virgule ou un point-virgule :
           </p>
-          <div className="text-[11px] font-mono bg-gray-50 border border-gray-200 rounded p-2 text-gray-600">
+          <div className="text-[11px] font-mono bg-canvas border border-line rounded p-2 text-muted">
             Nom , Prénom , Date de naissance , Redoublant<br />
-            <span className="text-gray-400">Ex : Ben Ali , Youssef , 14/03/2009 , non</span>
+            <span className="text-faint">Ex : Ben Ali , Youssef , 14/03/2009 , non</span>
           </div>
           <textarea
             value={importText}
             onChange={(e) => setImportText(e.target.value)}
             rows={8}
             placeholder={'Ben Ali\tYoussef\t14/03/2009\tnon\nTrabelsi\tAmira\t22/07/2009\toui'}
-            className="w-full text-[12px] font-mono border border-gray-300 rounded p-2 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+            className="w-full text-[12px] font-mono border border-line-strong rounded p-2 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
           />
           {parsedImport.length > 0 && (
-            <div className="border border-gray-200 rounded overflow-hidden">
-              <div className="bg-gray-50 px-3 py-1.5 text-[11px] font-semibold text-gray-500 uppercase tracking-wide">
+            <div className="border border-line rounded overflow-hidden">
+              <div className="bg-canvas px-3 py-1.5 text-[11px] font-semibold text-muted uppercase tracking-wide">
                 Aperçu — {parsedImport.length} élève(s)
               </div>
               <div className="max-h-40 overflow-auto">
                 <table className="w-full text-[12px]">
                   <tbody>
                     {parsedImport.slice(0, 50).map((p, i) => (
-                      <tr key={i} className="border-b border-gray-100 last:border-0">
-                        <td className="px-3 py-1 font-medium text-gray-800">{p.nom || <span className="text-red-500">(nom vide)</span>}</td>
-                        <td className="px-3 py-1 text-gray-700">{p.prenom || <span className="text-gray-300">—</span>}</td>
-                        <td className="px-3 py-1 font-mono text-gray-500">{p.dateNaissance ? safeFormatDate(p.dateNaissance) : '—'}</td>
-                        <td className="px-3 py-1">{p.redoublant ? <Badge variant="danger">Redoublant</Badge> : <span className="text-gray-300 text-[11px]">—</span>}</td>
+                      <tr key={i} className="border-b border-line last:border-0">
+                        <td className="px-3 py-1 font-medium text-ink">{p.nom || <span className="text-red-500">(nom vide)</span>}</td>
+                        <td className="px-3 py-1 text-ink">{p.prenom || <span className="text-faint">—</span>}</td>
+                        <td className="px-3 py-1 font-mono text-muted">{p.dateNaissance ? safeFormatDate(p.dateNaissance) : '—'}</td>
+                        <td className="px-3 py-1">{p.redoublant ? <Badge variant="danger">Redoublant</Badge> : <span className="text-faint text-[11px]">—</span>}</td>
                       </tr>
                     ))}
                   </tbody>
@@ -675,20 +675,20 @@ export default function ElevesPage() {
         {drawerEleve && (
           <div className="p-5 flex flex-col gap-5">
             <div className="flex flex-col gap-1">
-              <p className="text-[11px] text-gray-500 uppercase tracking-wide font-semibold">Informations</p>
-              <div className="bg-gray-50 border border-gray-200 rounded-lg p-4 flex flex-col gap-2">
+              <p className="text-[11px] text-muted uppercase tracking-wide font-semibold">Informations</p>
+              <div className="bg-canvas border border-line rounded-lg p-4 flex flex-col gap-2">
                 <div className="flex justify-between">
-                  <span className="text-[12px] text-gray-500">Classe</span>
-                  <span className="text-[12px] font-medium text-gray-800">{classe?.nom}</span>
+                  <span className="text-[12px] text-muted">Classe</span>
+                  <span className="text-[12px] font-medium text-ink">{classe?.nom}</span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-[12px] text-gray-500">Date de naissance</span>
-                  <span className="text-[12px] font-mono text-gray-800">
+                  <span className="text-[12px] text-muted">Date de naissance</span>
+                  <span className="text-[12px] font-mono text-ink">
                     {safeFormatDate(drawerEleve.dateNaissance)}
                   </span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-[12px] text-gray-500">Redoublant</span>
+                  <span className="text-[12px] text-muted">Redoublant</span>
                   <Badge variant={drawerEleve.redoublant ? 'danger' : 'neutral'}>
                     {drawerEleve.redoublant ? 'Oui' : 'Non'}
                   </Badge>
@@ -696,29 +696,29 @@ export default function ElevesPage() {
               </div>
             </div>
             <div className="flex flex-col gap-2">
-              <p className="text-[11px] text-gray-500 uppercase tracking-wide font-semibold">Notes par trimestre</p>
+              <p className="text-[11px] text-muted uppercase tracking-wide font-semibold">Notes par trimestre</p>
               <div className="grid grid-cols-3 gap-2">
                 {(['T1', 'T2', 'T3'] as const).map((t, i) => {
                   const moy = [drawerEleve.moyT1, drawerEleve.moyT2, drawerEleve.moyT3][i]
                   return (
-                    <div key={t} className={['border rounded-lg p-3 text-center', moy === null ? 'border-gray-200 bg-gray-50' : moy >= 10 ? 'border-green-200 bg-green-50' : 'border-red-200 bg-red-50'].join(' ')}>
-                      <p className="text-[11px] text-gray-500 mb-1">{t}</p>
-                      <p className={['text-[16px] font-bold font-mono', moy === null ? 'text-gray-300' : moy >= 10 ? 'text-green-700' : 'text-red-700'].join(' ')}>
+                    <div key={t} className={['border rounded-lg p-3 text-center', moy === null ? 'border-line bg-canvas' : moy >= 10 ? 'border-green-200 bg-green-50' : 'border-red-200 bg-red-50'].join(' ')}>
+                      <p className="text-[11px] text-muted mb-1">{t}</p>
+                      <p className={['text-[16px] font-bold font-mono', moy === null ? 'text-faint' : moy >= 10 ? 'text-green-700' : 'text-red-700'].join(' ')}>
                         {moy?.toFixed(2) ?? '—'}
                       </p>
                     </div>
                   )
                 })}
               </div>
-              <div className={['border rounded-lg p-3 flex items-center justify-between', drawerEleve.moyAnnuelle === null ? 'border-gray-200' : drawerEleve.moyAnnuelle >= 10 ? 'border-green-300 bg-green-50' : 'border-red-300 bg-red-50'].join(' ')}>
-                <span className="text-[12px] font-medium text-gray-600">Moyenne Annuelle</span>
-                <span className={['text-[16px] font-bold font-mono', drawerEleve.moyAnnuelle === null ? 'text-gray-300' : drawerEleve.moyAnnuelle >= 10 ? 'text-green-700' : 'text-red-700'].join(' ')}>
+              <div className={['border rounded-lg p-3 flex items-center justify-between', drawerEleve.moyAnnuelle === null ? 'border-line' : drawerEleve.moyAnnuelle >= 10 ? 'border-green-300 bg-green-50' : 'border-red-300 bg-red-50'].join(' ')}>
+                <span className="text-[12px] font-medium text-muted">Moyenne Annuelle</span>
+                <span className={['text-[16px] font-bold font-mono', drawerEleve.moyAnnuelle === null ? 'text-faint' : drawerEleve.moyAnnuelle >= 10 ? 'text-green-700' : 'text-red-700'].join(' ')}>
                   {drawerEleve.moyAnnuelle?.toFixed(2) ?? '—'}
                 </span>
               </div>
             </div>
             <div className="flex flex-col gap-2">
-              <p className="text-[11px] text-gray-500 uppercase tracking-wide font-semibold">
+              <p className="text-[11px] text-muted uppercase tracking-wide font-semibold">
                 Absences — {drawerEleve.totalAbsences}h total
               </p>
               <AbsenceLog eleveId={drawerEleve.id} classeId={classeId} />
@@ -733,27 +733,27 @@ export default function ElevesPage() {
 function AbsenceLog({ eleveId }: { eleveId: string; classeId: string }) {
   const absences = useStore((s) => s.absences.filter((a) => a.eleveId === eleveId))
   if (absences.length === 0) {
-    return <p className="text-[12px] text-gray-400 py-2">Aucune absence enregistrée</p>
+    return <p className="text-[12px] text-faint py-2">Aucune absence enregistrée</p>
   }
   return (
-    <table className="w-full text-[12px] border border-gray-200 rounded-lg overflow-hidden">
+    <table className="w-full text-[12px] border border-line rounded-lg overflow-hidden">
       <thead>
-        <tr className="bg-gray-50 border-b border-gray-200">
-          <th className="px-3 py-2 text-left text-[11px] font-semibold text-gray-500 uppercase tracking-wide">Date</th>
-          <th className="px-3 py-2 text-left text-[11px] font-semibold text-gray-500 uppercase tracking-wide">Durée</th>
-          <th className="px-3 py-2 text-left text-[11px] font-semibold text-gray-500 uppercase tracking-wide">Justifiée</th>
-          <th className="px-3 py-2 text-left text-[11px] font-semibold text-gray-500 uppercase tracking-wide">T.</th>
+        <tr className="bg-canvas border-b border-line">
+          <th className="px-3 py-2 text-left text-[11px] font-semibold text-muted uppercase tracking-wide">Date</th>
+          <th className="px-3 py-2 text-left text-[11px] font-semibold text-muted uppercase tracking-wide">Durée</th>
+          <th className="px-3 py-2 text-left text-[11px] font-semibold text-muted uppercase tracking-wide">Justifiée</th>
+          <th className="px-3 py-2 text-left text-[11px] font-semibold text-muted uppercase tracking-wide">T.</th>
         </tr>
       </thead>
       <tbody>
         {absences.map((a) => (
-          <tr key={a.id} className="border-b border-gray-100 last:border-0">
+          <tr key={a.id} className="border-b border-line last:border-0">
             <td className="px-3 py-1.5 font-mono">{safeFormatDate(a.date)}</td>
             <td className="px-3 py-1.5">{a.duree}h</td>
             <td className="px-3 py-1.5">
               <Badge variant={a.justifiee ? 'success' : 'danger'}>{a.justifiee ? 'Oui' : 'Non'}</Badge>
             </td>
-            <td className="px-3 py-1.5 text-gray-600">T{a.trimestre}</td>
+            <td className="px-3 py-1.5 text-muted">T{a.trimestre}</td>
           </tr>
         ))}
       </tbody>
